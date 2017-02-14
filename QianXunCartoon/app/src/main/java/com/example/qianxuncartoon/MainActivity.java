@@ -9,14 +9,18 @@ import android.view.View;
 import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.Toast;
+
+import com.example.qianxuncartoon.view.NoScrollViewPager;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity implements View.OnClickListener {
+public class MainActivity extends FragmentActivity //implements View.OnClickListener
+{
 
-    private ViewPager mViewPager;
+    private NoScrollViewPager mViewPager;
 
     //适配器
     private FragmentPagerAdapter mAdapter;
@@ -26,26 +30,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     //三个Tab对应布局
     private LinearLayout mFraHomePager;
-    private LinearLayout mFraTrace;
     private LinearLayout mFraAccount;
+    private LinearLayout mFraTrace;
+    //radio group
+    private RadioGroup rgGroup;
 
-    //对应tab总体
-    private LinearLayout tab_homePage;
-    private LinearLayout tab_trace;
-    private LinearLayout tab_account;
-
-    //对应的ImageButton
-    private ImageButton btn_homepage;
-    private ImageButton btn_trace;
-    private ImageButton btn_account;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState){
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
         initViews();//初始化控件
-        initEvents();//初始化事件
         initDatas();//初始化数据
     }
 
@@ -72,92 +68,38 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         mViewPager.setAdapter(mAdapter);
 
-        //设置ViewPager的切换监听
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        //设置底栏标签的切换监听
+        rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            //页面滚动事件
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            //页面选中事件
-            @Override
-            public void onPageSelected(int position) {
-                //设置position对应的集合中的Fragment
-                mViewPager.setCurrentItem(position);
-                resetImgs();
-                selectTab(position);
-            }
-
-            @Override
-            //页面滚动状态改变事件
-            public void onPageScrollStateChanged(int state) {
-
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                switch (checkedId) {
+                    case R.id.id_tab_homepage:
+                        mViewPager.setCurrentItem(0, false);
+                        break;
+                    case R.id.id_tab_trace:
+                        mViewPager.setCurrentItem(1, false);
+                        break;
+                    case R.id.id_tab_account:
+                        mViewPager.setCurrentItem(2, false);
+                        break;
+                }
             }
         });
+
+
     }
 
-    //根据点击改变此时按钮状态
-    private void selectTab(int position) {
-        switch (position){
-            case 0:
-                tab_homePage.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case 1:
-                tab_trace.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                break;
-            case 2:
-                tab_account.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                break;
-        }
-        mViewPager.setCurrentItem(position);
-    }
 
-    private void resetImgs() {
-        tab_homePage.setBackgroundColor(getResources().getColor(R.color.colorGrey));
-        tab_trace.setBackgroundColor(getResources().getColor(R.color.colorGrey));
-        tab_account.setBackgroundColor(getResources().getColor(R.color.colorGrey));
-    }
-
-    private void initEvents() {
-        btn_homepage.setOnClickListener(this);
-        btn_trace.setOnClickListener(this);
-        btn_account.setOnClickListener(this);
-    }
 
     private void initViews() {
-        mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
+        mViewPager = (NoScrollViewPager) findViewById(R.id.id_viewpager);
 
         mFraHomePager = (LinearLayout) findViewById(R.id.id_fragment_homepage);
         mFraTrace = (LinearLayout) findViewById(R.id.id_fragment_trace);
         mFraAccount = (LinearLayout) findViewById(R.id.id_fragment_account);
 
-        tab_homePage = (LinearLayout) findViewById(R.id.id_tab_homepage);
-        tab_trace = (LinearLayout) findViewById(R.id.id_tab_trace);
-        tab_account = (LinearLayout) findViewById(R.id.id_tab_account);
-
-        btn_homepage = (ImageButton) findViewById(R.id.id_tab_homepage_img);
-        btn_trace = (ImageButton) findViewById(R.id.id_tab_trace_img);
-        btn_account = (ImageButton) findViewById(R.id.id_tab_account_img);
+        rgGroup = (RadioGroup) findViewById(R.id.rg_group);
 
     }
 
-    @Override
-    public void onClick(View v) {
-
-        resetImgs();
-
-        switch (v.getId()){
-            case R.id.id_tab_homepage_img:
-                selectTab(0);
-                Toast.makeText(getApplicationContext(), "点击是有反应的",Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.id_tab_trace_img:
-                selectTab(1);
-                break;
-            case R.id.id_tab_account_img:
-                selectTab(2);
-                break;
-        }
-    }
 }

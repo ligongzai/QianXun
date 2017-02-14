@@ -1,75 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rg_group"
     android:layout_width="match_parent"
-    android:layout_height="55dp"
-    android:gravity="center"
+    android:layout_height="wrap_content"
     android:background="@color/colorGrey"
-    android:orientation="horizontal"
-    >
+    android:gravity="center"
+    android:orientation="horizontal">
 
-    <LinearLayout
+    <RadioButton
         android:id="@+id/id_tab_homepage"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_height="match_parent"
+        android:background="@drawable/tab_selector"
+        android:button="@null"
+        android:drawablePadding="3dp"
+        android:drawableTop="@mipmap/img_tab_homepage_48px"
         android:gravity="center"
-        android:orientation="vertical"
-        >
-            <ImageButton
-                android:id="@+id/id_tab_homepage_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/img_tab_homepage_48px"
-                android:background="@color/colorGrey"
-                android:layout_weight="1" />
-            <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/colorBlack"
-                    android:text="@string/text_homePage"/>
-    </LinearLayout>
+        android:padding="5dp"
+        android:checked="true"
+        android:text="首页" />
 
-    <LinearLayout
+    <RadioButton
         android:id="@+id/id_tab_trace"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_height="match_parent"
+        android:background="@drawable/tab_selector"
+        android:button="@null"
+        android:drawablePadding="3dp"
+        android:drawableTop="@mipmap/img_tab_trace_48px"
         android:gravity="center"
-        android:orientation="vertical"
-        >
-        <ImageButton
-            android:id="@+id/id_tab_trace_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/img_tab_trace_48px"
-            android:background="@color/colorGrey"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="@string/text_trace"/>
-    </LinearLayout>
+        android:padding="5dp"
+        android:text="我的漫画" />
 
-    <LinearLayout
+    <RadioButton
         android:id="@+id/id_tab_account"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:layout_weight="1"
-        android:layout_height="match_parent"
+        android:background="@drawable/tab_selector"
+        android:button="@null"
+        android:drawablePadding="3dp"
+        android:drawableTop="@mipmap/img_tab_accout_48px"
         android:gravity="center"
-        android:orientation="vertical"
-        >
-        <ImageButton
-            android:id="@+id/id_tab_account_img"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/img_tab_accout_48px"
-            android:background="@color/colorGrey"
-            android:layout_weight="1" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorBlack"
-            android:text="@string/text_account"/>
-    </LinearLayout>
-</LinearLayout>
+        android:padding="5dp"
+        android:text="账户" />
+</RadioGroup>
