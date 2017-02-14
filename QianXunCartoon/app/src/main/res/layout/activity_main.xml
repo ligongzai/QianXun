@@ -1,18 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="?android:colorBackground"
     android:orientation="vertical"
+    tools:context="com.example.qianxuncartoon.activity.MainActivity"
     >
+
 
     <com.example.qianxuncartoon.view.NoScrollViewPager
         android:id="@+id/id_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0px"
-        android:layout_weight="1" >
-    </com.example.qianxuncartoon.view.NoScrollViewPager>
+        android:layout_weight="1"></com.example.qianxuncartoon.view.NoScrollViewPager>
 
-    <include layout="@layout/tab_bottom" />
+    <View style="@style/DividerHorizontal" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:itemIconTint="@color/bottom_item_text_color"
+        app:itemTextColor="@color/bottom_item_text_color"
+        app:menu="@menu/menu_bottom_navigation_items" />
 </LinearLayout>

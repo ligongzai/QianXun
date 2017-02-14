@@ -1,9 +1,12 @@
 package com.example.qianxuncartoon.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
@@ -17,7 +20,7 @@ import com.example.qianxuncartoon.view.NoScrollViewPager;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends FragmentActivity //implements View.OnClickListener
+public class MainActivity extends BaseActivity //implements View.OnClickListener
 {
 
     private NoScrollViewPager mViewPager;
@@ -32,8 +35,9 @@ public class MainActivity extends FragmentActivity //implements View.OnClickList
     private LinearLayout mFraHomePager;
     private LinearLayout mFraAccount;
     private LinearLayout mFraTrace;
-    //radio group
-    private RadioGroup rgGroup;
+
+    //底部按键布局
+    private BottomNavigationView bottomNavigationView;
 
 
     @Override
@@ -69,26 +73,26 @@ public class MainActivity extends FragmentActivity //implements View.OnClickList
         mViewPager.setAdapter(mAdapter);
 
         //设置底栏标签的切换监听
-        rgGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.id_tab_homepage:
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.item1:
                         mViewPager.setCurrentItem(0, false);
                         break;
-                    case R.id.id_tab_trace:
+                    case R.id.item2:
                         mViewPager.setCurrentItem(1, false);
                         break;
-                    case R.id.id_tab_account:
+                    case R.id.item3:
                         mViewPager.setCurrentItem(2, false);
                         break;
                 }
+                return false;
             }
         });
 
 
     }
-
 
 
     private void initViews() {
@@ -98,7 +102,7 @@ public class MainActivity extends FragmentActivity //implements View.OnClickList
         mFraTrace = (LinearLayout) findViewById(R.id.id_fragment_trace);
         mFraAccount = (LinearLayout) findViewById(R.id.id_fragment_account);
 
-        rgGroup = (RadioGroup) findViewById(R.id.rg_group);
+        bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
 
     }
 
