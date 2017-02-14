@@ -1,17 +1,17 @@
-package com.example.qianxuncartoon;
+package com.example.qianxuncartoon.activity;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.view.View;
 import android.view.Window;
-import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
+import com.example.qianxuncartoon.fragment.AccountFragment;
+import com.example.qianxuncartoon.fragment.HomePagerFragment;
+import com.example.qianxuncartoon.R;
+import com.example.qianxuncartoon.fragment.TraceFragment;
 import com.example.qianxuncartoon.view.NoScrollViewPager;
 
 import java.util.ArrayList;

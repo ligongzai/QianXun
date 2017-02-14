@@ -1,7 +1,8 @@
 <resources>
-    <string name="app_name">QianXunCartoon</string>
+    <string name="app_name">千寻漫画</string>
     <string name="action_settings">Settings</string>
     <string name="text_homePage">首页</string>
     <string name="text_trace">我的漫画</string>
     <string name="text_account">账户</string>
+    <string name="title_activity_splash">SplashActivity</string>
 </resources>
