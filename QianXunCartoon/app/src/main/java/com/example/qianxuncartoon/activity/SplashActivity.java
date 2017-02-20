@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.RotateAnimation;
@@ -28,18 +29,22 @@ public class SplashActivity extends Activity {
 //        animationRotate.setDuration(1000);
 //        animationRotate.setFillAfter(true);
 
-        //缩放动画
+         //缩放动画
+//        rlRoot = (RelativeLayout) findViewById(R.id.activity_splash);
+//        ScaleAnimation animationScale=new ScaleAnimation(0, 1, 0, 1,
+//                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
+//                0.5f);
+//        animationScale.setDuration(500);
+//        animationScale.setFillAfter(true);
+
         rlRoot = (RelativeLayout) findViewById(R.id.activity_splash);
-        ScaleAnimation animationScale=new ScaleAnimation(0, 1, 0, 1,
-                Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF,
-                0.5f);
-        animationScale.setDuration(500);
-        animationScale.setFillAfter(true);
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0.5f, 1.0f);
+        alphaAnimation.setDuration(2000);
 
         //动画集合
         AnimationSet set= new AnimationSet(true);
-//        set.addAnimation(animationRotate);
-        set.addAnimation(animationScale);
+        set.addAnimation(alphaAnimation);
+//      set.addAnimation(animationRotate);
 
         //启动
         rlRoot.startAnimation(set);

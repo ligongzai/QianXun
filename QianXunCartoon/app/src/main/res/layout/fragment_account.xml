@@ -6,8 +6,10 @@
     android:orientation="vertical"
     >
 
-    <TextView
+
+    <Button
+        android:text="点击登陆"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:text="测试之用的账户管理页面" />
+        android:layout_height="wrap_content"
+        android:id="@+id/login_btn" />
 </LinearLayout>

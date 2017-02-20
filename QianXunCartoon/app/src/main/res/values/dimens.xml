@@ -11,4 +11,7 @@
     <dimen name="head_size">28.0dip</dimen>
     <dimen name="top_category_height">40.0dip</dimen>
     <dimen name="category_tab_text">15.0sp</dimen>
+
+    <dimen name="fab_size_normal">100dp</dimen>
+    <dimen name="text_size">12sp</dimen>
 </resources>

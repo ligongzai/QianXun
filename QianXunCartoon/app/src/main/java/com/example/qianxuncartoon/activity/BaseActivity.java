@@ -11,11 +11,8 @@ import android.view.View;
 import com.example.qianxuncartoon.R;
 
 /**
- * Created by 吴小龙同學
- * on 2015/11/16
- * 官网文档：https://material.google.com/
- * 个人博客：http://wuxiaolong.me/
- * 公众号：吴小龙同学
+ *
+ *
  */
 public class BaseActivity extends AppCompatActivity {
     public Activity mActivity;
