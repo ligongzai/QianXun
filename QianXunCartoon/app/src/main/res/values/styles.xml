@@ -10,6 +10,12 @@
         <item name="android:windowContentTransitions">true</item>
     </style>
 
+    <style name="Cover">
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:scaleType">centerCrop</item>
+    </style>
+
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
