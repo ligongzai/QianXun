@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 
 
 import com.example.qianxuncartoon.R;
+import com.example.qianxuncartoon.adapter.ViewPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -52,47 +53,18 @@ public class TraceFragment extends BaseFragment {
     //初始化右上角三个点点的菜单栏
     private void inflateMenu() {
         mToolbar.inflateMenu(R.menu.menu_trace);
-        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_about:
-//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/WuXiaolong/DesignSupportLibrarySample"));
-//                        getActivity().startActivity(intent);
-                        break;
-                }
-                return true;
-            }
-        });
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFrag(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+//        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+//            @Override
+//            public boolean onMenuItemClick(MenuItem item) {
+//                switch (item.getItemId()) {
+//                    case R.id.menu_about:
+////                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/WuXiaolong/DesignSupportLibrarySample"));
+////                        getActivity().startActivity(intent);
+//                        break;
+//                }
+//                return true;
+//            }
+//        });
     }
 
     private void initTabLayout(View view) {
@@ -113,6 +85,7 @@ public class TraceFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
+
         Fragment newfragment = new ContentFragment();
         Bundle data = new Bundle();
         data.putInt("id", 0);
@@ -134,7 +107,6 @@ public class TraceFragment extends BaseFragment {
         data.putString("title", getString(R.string.page3));
         newfragment.setArguments(data);
         adapter.addFrag(newfragment, getString(R.string.page3));
-
 
         viewPager.setAdapter(adapter);
 

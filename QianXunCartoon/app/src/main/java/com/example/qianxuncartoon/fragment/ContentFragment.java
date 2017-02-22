@@ -1,6 +1,7 @@
 package com.example.qianxuncartoon.fragment;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;

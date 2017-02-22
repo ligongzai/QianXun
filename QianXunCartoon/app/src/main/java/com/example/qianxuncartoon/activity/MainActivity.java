@@ -4,12 +4,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
-import android.widget.RadioGroup;
 
 import com.example.qianxuncartoon.fragment.AccountFragment;
 import com.example.qianxuncartoon.fragment.HomePagerFragment;
@@ -22,6 +20,9 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity //implements View.OnClickListener
 {
+
+    /**  总体常量  **/
+    public static final String URL_PREFIX = "http://10.12.137.227:8080/qxComic";
 
     private NoScrollViewPager mViewPager;
 

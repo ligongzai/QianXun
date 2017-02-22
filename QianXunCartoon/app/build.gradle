@@ -34,9 +34,14 @@ dependencies {
     compile 'com.android.support:cardview-v7:' + supportVersion
     compile 'com.wuxiaolong.pullloadmorerecyclerview:library:1.1.1'
     compile 'com.wuxiaolong.androidutils:androidutils:1.0.6'
+
     compile 'com.jakewharton:butterknife:5.1.1'
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.alibaba:fastjson:1.2.10'
+    compile files('libs/okhttp-3.0.0.jar')
+    compile files('libs/okio-1.6.0.jar')
+    compile files('libs/gson-2.1.jar')
+    compile files('libs/picasso-2.5.2.jar')
     testCompile 'junit:junit:4.12'
     compile files('src/main/libs/volley-1.0.11.jar')
     compile 'com.github.jrvansuita:MaterialAbout:v0.0.7'
