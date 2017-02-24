@@ -173,7 +173,7 @@ public class WBAuthActivity extends Activity {
                 // 保存 Token 到 SharedPreferences
                 AccessTokenKeeper.writeAccessToken(WBAuthActivity.this, mAccessToken);
                 Toast.makeText(WBAuthActivity.this, 
-                        mAccessToken.getToken(), Toast.LENGTH_LONG).show();
+                        R.string.weibosdk_demo_toast_auth_success, Toast.LENGTH_SHORT).show();
             } else {
                 // 以下几种情况，您会收到 Code：
                 // 1. 当您未在平台上注册的应用程序的包名与签名时；

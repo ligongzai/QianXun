@@ -78,7 +78,7 @@ public class HomePagerFragment extends Fragment {
             Bundle data = new Bundle();
             data.putInt("classid", mTbClass.get(i).getClassid());
             data.putString("classname", mTbClass.get(i).getClassname());
-            //ViewPager本身具有预加载的性质，所以它会默认加载左右两边的Fragment，视图和数据也就被初始化了。
+
             Fragment newfragment = new ContentHomeFragment();
             newfragment.setArguments(data);
             adapter.addFrag(newfragment, mTbClass.get(i).getClassname());

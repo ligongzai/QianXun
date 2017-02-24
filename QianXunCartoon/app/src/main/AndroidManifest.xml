@@ -36,9 +36,11 @@
         <activity
             android:name=".activity.RegisterActivity"
             android:theme="@style/Translucent" />
-        <activity android:name=".activity.LoginSuccessActivity"></activity>
+        <activity android:name=".activity.LoginSuccessActivity"/>
 
-        <activity android:name=".activity.CartoonIntro"></activity>
+        <activity android:name=".activity.CartoonIntro"
+            android:theme="@style/AppTheme.NoActionBar"/>
+
     </application>
 
 </manifest>

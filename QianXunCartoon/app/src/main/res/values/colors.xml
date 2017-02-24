@@ -5,6 +5,8 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorGrey">#EEEEE0</color>
     <color name="colorBlack">#0A0A0A</color>
+    <color name="colorOrange">#FF7F24</color>
+    <color name="colorDeepGrey">#8B8682</color>
 
     <color name="category_tab_text">#ff707070</color>
     <color name="category_tab_text_dark">#fffafafa</color>

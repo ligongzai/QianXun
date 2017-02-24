@@ -1,3 +1,5 @@
 include ':app'
 include ':weiboSDK'
 include ':weiboSDKDemo'
+include ':weiboSDK'
+include ':weiboSDKDemo'

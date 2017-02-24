@@ -23,7 +23,6 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
 
     /**  总体常量  **/
     public static final String URL_PREFIX = "http://192.168.191.1:8080/qxComic";
-    //http://10.12.137.227:8080/qxComic"
 
     private NoScrollViewPager mViewPager;
 

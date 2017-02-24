@@ -13,6 +13,16 @@ public class TbComic {
 
     private String comiccover;
 
+    public String getClassname() {
+        return classname;
+    }
+
+    public void setClassname(String classname) {
+        this.classname = classname;
+    }
+
+    private String classname;
+
     public Integer getComicid() {
         return comicid;
     }

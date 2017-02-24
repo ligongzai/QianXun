@@ -49,6 +49,11 @@
         <item name="android:layout_height">1dp</item>
         <item name="android:background">?android:attr/listDivider</item>
     </style>
+
+    <style name="BtnStyle">
+        <item name="android:layout_marginTop">145dp</item>
+        <item name="android:text">10dp</item>
+    </style>
     <!--<style name="main_title_bar_style">-->
     <!--<item name="android:background">@drawable/bg_titlebar_main</item>-->
     <!--<item name="android:layout_width">fill_parent</item>-->
