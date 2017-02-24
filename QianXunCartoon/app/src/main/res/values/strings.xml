@@ -12,10 +12,10 @@
     <string name="page3">下载</string>
 
     <string name="login_success">login success</string>
-    <string name="login">LOGIN</string>
-    <string name="Username">Username</string>
-    <string name="Password">Password</string>
-    <string name="forgot_your_password">Forgot your password ?</string>
+    <string name="login">用户登陆</string>
+    <string name="Username">用户名</string>
+    <string name="Password">密码</string>
+    <string name="forgot_your_password">密码忘记啦 ?</string>
     <string name="go">GO</string>
     <string name="repeat_password">Repeat Password</string>
     <string name="next">NEXT</string>

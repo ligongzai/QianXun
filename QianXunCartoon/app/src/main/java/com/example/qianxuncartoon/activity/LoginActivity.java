@@ -3,6 +3,7 @@ package com.example.qianxuncartoon.activity;
 import android.app.ActivityOptions;
 import android.content.Intent;
 import android.os.Build;
+import android.provider.SyncStateContract;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -17,20 +18,42 @@ import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.example.qianxuncartoon.AppBus;
+import com.example.qianxuncartoon.BusEventData;
 import com.example.qianxuncartoon.Constant;
 import com.example.qianxuncartoon.HttpResponeCallBack;
+
 import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.QianXunLibApplication;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.RequestApiData;
+import com.example.qianxuncartoon.TokenKeeper;
 import com.example.qianxuncartoon.UrlConstance;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.bean.UserBaseInfo;
+import com.sina.weibo.sdk.auth.AuthInfo;
+import com.sina.weibo.sdk.auth.Oauth2AccessToken;
+import com.sina.weibo.sdk.auth.WeiboAuthListener;
+import com.sina.weibo.sdk.exception.WeiboException;
+import com.sina.weibo.sdk.widget.LoginButton;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
 public class LoginActivity extends AppCompatActivity implements HttpResponeCallBack {
+    private AuthInfo mAuthInfo;
+    /**
+     * 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
+     */
+    private Oauth2AccessToken mAccessToken;
+    /**
+     * 登陆认证对应的listener
+     */
+    private AuthListener mLoginListener = new AuthListener();
+
 
     @InjectView(R.id.et_username)
     EditText etUsername;
@@ -42,13 +65,25 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
     CardView cv;
     @InjectView(R.id.fab)
     FloatingActionButton fab;
+    @InjectView(R.id.login_button_default)
+    LoginButton mLoginBtnDefault;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.inject(this);
+        mAuthInfo = new AuthInfo(this, Constant.APP_KEY, Constant.REDIRECT_URL, Constant.SCOPE);
+        mLoginBtnDefault.setWeiboAuthInfo(mAuthInfo, mLoginListener); // 为按钮设置授权认证信息
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
+
 
     @OnClick({R.id.bt_go, R.id.fab})
     public void onClick(View view) {
@@ -75,17 +110,66 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
 
                 String username = etUsername.getText().toString();//用户名
                 String password = etPassword.getText().toString();//密码
+
                 if (!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)) {
                     RequestApiData.getInstance().getLoginData(username, password, UserBaseInfo.class, LoginActivity.this);
+                    AppBus.getInstance().post(new BusEventData("somebody alive"));
                 } else {
                     Toast.makeText(LoginActivity.this, "账号或者密码有误", Toast.LENGTH_SHORT).show();
                 }
 
-                Intent i2 = new Intent(this, LoginSuccessActivity.class);
-                startActivity(i2, oc2.toBundle());
+
+
+
+//                overridePendingTransition(android.R.anim.slide_in_left,
+//                        android.R.anim.slide_out_right);
+//                Intent i2 = new Intent(this, LoginSuccessActivity.class);
+//                startActivity(i2, oc2.toBundle());
                 break;
         }
     }
+
+
+
+    //微博登陆按钮监听器
+    class AuthListener implements WeiboAuthListener {
+
+        @Override
+        public void onComplete(Bundle values) {
+            // 从 Bundle 中解析 Token
+            mAccessToken = Oauth2AccessToken.parseAccessToken(values);
+            if (mAccessToken.isSessionValid()) {
+                // 保存 Token 到 SharedPreferences
+                TokenKeeper.writeAccessToken(LoginActivity.this, mAccessToken);
+                Toast.makeText(LoginActivity.this,
+                        "授权成功"+mAccessToken.getToken(), Toast.LENGTH_SHORT).show();
+            } else {
+                // 以下几种情况，您会收到 Code：
+                // 1. 当您未在平台上注册的应用程序的包名与签名时；
+                // 2. 当您注册的应用程序包名与签名不正确时；
+                // 3. 当您在平台上注册的包名和签名与您当前测试的应用的包名和签名不匹配时。
+                String code = values.getString("code");
+                String message = "授权失败";
+                if (!TextUtils.isEmpty(code)) {
+                    message = message + "\nObtained the code: " + code;
+                }
+                Toast.makeText(LoginActivity.this, message, Toast.LENGTH_LONG).show();
+            }
+        }
+
+        @Override
+        public void onCancel() {
+            Toast.makeText(LoginActivity.this,
+                    "取消授权", Toast.LENGTH_LONG).show();
+        }
+
+        @Override
+        public void onWeiboException(WeiboException e) {
+            Toast.makeText(LoginActivity.this,
+                    "Auth exception : " + e.getMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
 
     @Override
     public void onResponeStart(String apiName) {
@@ -101,22 +185,42 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
         Toast.makeText(LoginActivity.this, "Loading...", Toast.LENGTH_SHORT).show();
     }
 
+    //延时函数
+    private void delay(int ms){
+        try {
+            Thread.currentThread();
+            Thread.sleep(ms);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //登陆成功之后的回调
     @Override
     public void onSuccess(String apiName, Object object) {
         if (UrlConstance.KEY_LOGIN_INFO.equals(apiName)) {
             //Toast.makeText(LoginActivity.this, object.toString(), Toast.LENGTH_LONG).show();
-
             if (object != null && object instanceof JSONObject) {
-
                 String jsonString = ((JSONObject) object).getString(Constant.SUC_MSG);
                 if (jsonString != null) {
+                    //将JSON字符串对象化
                     UserBaseInfo user = JSON.parseObject(jsonString, UserBaseInfo.class);
-                    Toast.makeText(LoginActivity.this, user.toString(), Toast.LENGTH_LONG).show();
-
-                    //登陆成功，保存登录信息
-                    QianXunApplication.getInstance().setBaseUser(user);
+                    Toast.makeText(LoginActivity.this, "登陆成功", Toast.LENGTH_LONG).show();
+                    //登陆成功，保存登录信息到Application中
+                    //QianXunApplication.getInstance().setBaseUser(user);
 
                     //保存在SP中
+                    UserPreference.save(Constant.IS_USER_ID, String.valueOf(user.getUserid()));
+                    UserPreference.save(Constant.IS_USER_NAME,user.getUsername());
+                    UserPreference.save(Constant.IS_USER_PASSWORD,user.getUserpwd());
+                    UserPreference.save(Constant.IS_USER_TYPE, String.valueOf(user.getUsertype()));
+                    //跳转到个人信息页面
+
+                    //AppBus.getInstance().post(new BusEventData("somebody alive"));
+
+                    Intent intent= new Intent(LoginActivity.this,MainActivity.class);
+                    startActivity(intent);
+                    //finish();
 
 
                 } else {
@@ -132,4 +236,20 @@ public class LoginActivity extends AppCompatActivity implements HttpResponeCallB
     public void onFailure(String apiName, Throwable t, int errorNo, String strMsg) {
         Toast.makeText(LoginActivity.this, strMsg, Toast.LENGTH_LONG).show();
     }
+
+    //微博登陆成功之后的回调
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (mLoginBtnDefault != null) {
+            mLoginBtnDefault.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        EventBus.getDefault().unregister(this);
+//    }
+
 }

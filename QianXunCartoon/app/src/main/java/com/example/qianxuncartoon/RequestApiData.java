@@ -1,5 +1,8 @@
 package com.example.qianxuncartoon;
 
+import android.widget.ImageView;
+
+import com.example.qianxuncartoon.bean.FavorPrivateInfo;
 import com.example.qianxuncartoon.bean.UserBaseInfo;
 
 import java.util.HashMap;
@@ -36,9 +39,25 @@ public class RequestApiData {
         HashMap<String,String> parameter = new HashMap<>();
         parameter.put("username",username);
         parameter.put("password",password);
+        parameter.put("usertype", String.valueOf(0));
 
         RequestManager.post(UrlConstance.APP_URL,tagUrl,parameter,clazz,callback);
 
 
+    }
+
+    /**
+     * 获取收藏漫画信息
+     */
+    public void getFavorPrivateData(int userId, int page, Class<FavorPrivateInfo> clazz, HttpResponeCallBack callback){
+        String tagUrl= UrlConstance.KEY_FOVAR_PRIVATE; //收藏的漫画接口
+        HashMap<String,String> parameter= new HashMap<>();
+        parameter.put("userId", String.valueOf(userId));
+        parameter.put("page", String.valueOf(page));
+        RequestManager.post(UrlConstance.APP_URL,tagUrl,parameter,clazz,callback);
+    }
+
+    public void getFavorPrivateImage(String imgUrl, ImageView view){
+        RequestManager.getImage(imgUrl,view);
     }
 }

@@ -53,18 +53,47 @@ public class TraceFragment extends BaseFragment {
     //初始化右上角三个点点的菜单栏
     private void inflateMenu() {
         mToolbar.inflateMenu(R.menu.menu_trace);
-//        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem item) {
-//                switch (item.getItemId()) {
-//                    case R.id.menu_about:
-////                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/WuXiaolong/DesignSupportLibrarySample"));
-////                        getActivity().startActivity(intent);
-//                        break;
-//                }
-//                return true;
-//            }
-//        });
+        mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_about:
+//                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://github.com/WuXiaolong/DesignSupportLibrarySample"));
+//                        getActivity().startActivity(intent);
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
+    class ViewPagerAdapter extends FragmentPagerAdapter {
+        private final List<Fragment> mFragmentList = new ArrayList<>();
+        private final List<String> mFragmentTitleList = new ArrayList<>();
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            return mFragmentList.get(position);
+        }
+
+        @Override
+        public int getCount() {
+            return mFragmentList.size();
+        }
+
+        public void addFrag(Fragment fragment, String title) {
+            mFragmentList.add(fragment);
+            mFragmentTitleList.add(title);
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return mFragmentTitleList.get(position);
+        }
     }
 
     private void initTabLayout(View view) {
@@ -85,13 +114,13 @@ public class TraceFragment extends BaseFragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-
+        //实例化新的动漫标签
         Fragment newfragment = new ContentFragment();
         Bundle data = new Bundle();
-        data.putInt("id", 0);
-        data.putString("title", getString(R.string.page1));
-        newfragment.setArguments(data);
-        adapter.addFrag(newfragment, getString(R.string.page1));
+        data.putInt("id", 0);//收藏Fragment的id
+        data.putString("title", getString(R.string.page1));//收藏Fragment的标题
+        newfragment.setArguments(data);//设置收藏Fragment的标题和id
+        adapter.addFrag(newfragment, getString(R.string.page1)); //向FragmentList和TitleList中分别加入fragment对象和标题
 
         newfragment = new ContentFragment();
         data = new Bundle();
@@ -108,7 +137,8 @@ public class TraceFragment extends BaseFragment {
         newfragment.setArguments(data);
         adapter.addFrag(newfragment, getString(R.string.page3));
 
-        viewPager.setAdapter(adapter);
+
+        viewPager.setAdapter(adapter); //启动适配器
 
     }
 }
