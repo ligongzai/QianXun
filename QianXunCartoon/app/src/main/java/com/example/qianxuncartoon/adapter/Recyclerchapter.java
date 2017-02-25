@@ -26,9 +26,9 @@ public class Recyclerchapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
         void onItemClick(View view);
     }
 
-    private RecyclerHomepagerAdapter.OnRecyclerViewItemClickListener mOnItemClickListener = null;
+    private OnRecyclerViewItemClickListener mOnItemClickListener = null;
 
-    public void setOnItemClickListener(RecyclerHomepagerAdapter.OnRecyclerViewItemClickListener listener) {
+    public void setOnItemClickListener(OnRecyclerViewItemClickListener listener) {
         mOnItemClickListener = listener;
     }
 
@@ -48,8 +48,10 @@ public class Recyclerchapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-        ((ChapterViewHolder)holder).episodeid.setText(datas.get(position).getEpisodeid());
-        ((ChapterViewHolder)holder).episodenum.setText(datas.get(position).getEpisodenum());
+        Integer i = datas.get(position).getEpisodeid();
+        String la = String.valueOf(i);
+        ((ChapterViewHolder)holder).episodeid.setText(String.valueOf(datas.get(position).getEpisodeid()));
+        ((ChapterViewHolder)holder).episodenum.setText("第" + datas.get(position).getEpisodenum() + "话");
     }
 
     @Override

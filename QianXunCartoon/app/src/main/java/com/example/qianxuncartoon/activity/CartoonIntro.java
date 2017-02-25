@@ -1,20 +1,18 @@
 package com.example.qianxuncartoon.activity;
 
-import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,16 +23,21 @@ import com.example.qianxuncartoon.adapter.Recyclerchapter;
 import com.example.qianxuncartoon.algorithm.Fastblur;
 import com.example.qianxuncartoon.http.MyOkhttp;
 import com.example.qianxuncartoon.model.TbComic;
+import com.example.qianxuncartoon.model.TbEpisode;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
+import static com.example.qianxuncartoon.adapter.Recyclerchapter.*;
+
 
 public class CartoonIntro extends AppCompatActivity implements View.OnClickListener {
-
-  //  private CartoonDetail mCartoonDetail;
+    
     private ImageView cartoon_intro_img_blur;
     private ImageView cartoon_intro_img_original;
     private TextView cartoon_intro_itsname;
@@ -46,15 +49,19 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     private Button btn_cartooninfo_collect;
     private Button btn_cartooninfo_beginread;
     private TbComic mTbComic;
+    private List<TbEpisode> mTbEpisode;
     private RecyclerView recycler_singlecartoon;
-    private Recyclerchapter madapter;
+    private Recyclerchapter madapter = null;
+    private GridLayoutManager mgridLayoutManager;
+
+    private int site = 1; //站点id
 
     private final String URL_SINGLECOMIC = "/singleComic?comicId=";
-    @RequiresApi(api = Build.VERSION_CODES.GINGERBREAD)
+    private final String URL_EPISODES = "/source?";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_cartoon_intro);
         initWidget();
         getData();
@@ -72,6 +79,9 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         btn_cartooninfo_beginread = (Button) findViewById(R.id.btn_cartooninfo_beginread);
         ic_text_download = (TextView) findViewById(R.id.ic_text_download);
         ic_text_getsource = (TextView) findViewById(R.id.ic_text_getsource);
+        recycler_singlecartoon = (RecyclerView) findViewById(R.id.recycler_singlecartoon);
+        mgridLayoutManager = new GridLayoutManager(getApplicationContext(), 4 ,GridLayoutManager.VERTICAL,false);
+        recycler_singlecartoon.setLayoutManager(mgridLayoutManager);
 
         //设置图标字体
         Typeface iconfont = Typeface.createFromAsset(getAssets(),"font_w27n7ly31ae5ewmi/iconfont.ttf");
@@ -81,8 +91,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_getsource.setText("\ue690");
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private void getData() {
         //开线程获取数据
         new GetData().execute(MainActivity.URL_PREFIX + URL_SINGLECOMIC+getIntent().getStringExtra("url"));
@@ -105,11 +113,33 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_download.setOnClickListener(this);
         ic_text_getsource.setOnClickListener(this);
 
+        //开线程获取集数相关信息
+        new GetEpisode().execute(MainActivity.URL_PREFIX + URL_EPISODES + "siteId=" + site + "&comicId=" +mTbComic.getComicid());
 
     }
 
-    private void applyBlur() {
+    //主线程更新集数页面
+    private void upDateEpisode() {
+        if (madapter == null){
+            madapter = new Recyclerchapter(getApplicationContext(),mTbEpisode);
+            recycler_singlecartoon.setAdapter(madapter);
 
+            madapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
+                @Override
+                public void onItemClick(View view) {
+
+                    Intent intent = new Intent(getApplicationContext(),ReadCartoonActivity.class);
+                    String i = (String) ((TextView)view.findViewById(R.id.gridv_chapter_epiid)).getText();
+                    //此处要加入观看者信息
+                    intent.putExtra("UserId","1");
+                    intent.putExtra("EpisodeId",i);
+                    startActivity(intent);
+                }
+            });
+        }
+    }
+
+    private void applyBlur() {
         //当一个视图树将要绘制时，所要调用的回调函数的接口类
         cartoon_intro_img_blur.getViewTreeObserver().addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
             @Override
@@ -124,7 +154,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         });
     }
 
-    @TargetApi(Build.VERSION_CODES.JELLY_BEAN)
     private Bitmap blur(Bitmap bkg, View view) {
         long startMs = System.currentTimeMillis();
         float radius = 20;
@@ -155,8 +184,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     }
 
     //线程池，工作者线程
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class GetData extends AsyncTask<String ,Integer, String> {
         @Override
         protected String doInBackground(String... params) {
@@ -182,11 +209,8 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
            upDateUI();
         }
 
-
     }
 
-
-    @RequiresApi(api = Build.VERSION_CODES.CUPCAKE)
     private class GetEpisode extends AsyncTask<String , Integer,String>{
 
         @Override
@@ -203,16 +227,17 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 Gson gson = new Gson();
                 try {
                     jsonObject = new JSONObject(result);
-                    jsonData = jsonObject.getString("comic");
-                    mTbComic = gson.fromJson(jsonData,TbComic.class);
-                    mTbComic.setClassname(jsonObject.getString("classname"));
+                    jsonData = jsonObject.getString("success");
+                    mTbEpisode = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
+                    upDateEpisode();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
 
-
         }
 
     }
+
+
 }
