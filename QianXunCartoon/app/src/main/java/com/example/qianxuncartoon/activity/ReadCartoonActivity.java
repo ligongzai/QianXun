@@ -1,7 +1,9 @@
 package com.example.qianxuncartoon.activity;
 
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -33,6 +35,7 @@ public class ReadCartoonActivity extends BaseActivity{
     private boolean dataIsExecutive = false;
     private int lastVisibleItem;//控制加载更新
     private int page = 1;
+    private String episodeId;
     private String URL_READ = "/episode?";
 
     @Override
@@ -47,13 +50,12 @@ public class ReadCartoonActivity extends BaseActivity{
         mRecyclerView = (RecyclerView) findViewById(R.id.recycler_readcartoon);
         mLinearLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        episodeId = getIntent().getStringExtra("EpisodeId");
         setListener(); //设置监听事件
     }
 
     private void getData() {
-        String i = MainActivity.URL_PREFIX + URL_READ + "episodeId=" + getIntent().getStringExtra("EpisodeId")
-                + "&userId=" + getIntent().getStringExtra("UserId") + "&page=" +page;
-        new GetData().execute(MainActivity.URL_PREFIX + URL_READ + "episodeId=" + getIntent().getStringExtra("EpisodeId")
+        new GetData().execute(MainActivity.URL_PREFIX + URL_READ + "episodeId=" + episodeId
               + "&userId=" + getIntent().getStringExtra("UserId") + "&page=" +page);
     }
 
@@ -81,13 +83,38 @@ public class ReadCartoonActivity extends BaseActivity{
         });
     }
 
+    //加载更多
     private void loadMore() {
-        if ( dataIsExecutive ){
-            Toast.makeText(getApplicationContext(),"本节已完！",Toast.LENGTH_SHORT).show();
+        if (dataIsExecutive){
+            getNextEpisode();
             return;
         }
         ++page;
         getData();
+    }
+
+    private void getNextEpisode() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("提示");
+        builder.setMessage("本话已阅读完毕，是否进入下一话");
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                mTbPicture.clear();
+                new GetNextEpisodeId().execute(MainActivity.URL_PREFIX +"/next?episodeId=" + episodeId);
+                page = 1;
+                dataIsExecutive = false;
+                getData();
+
+            }
+        });
+        builder.show();
     }
 
     private void upDateUI() {
@@ -119,7 +146,7 @@ public class ReadCartoonActivity extends BaseActivity{
                     }
                     Gson gson = new Gson();
                     jsonData = jsonObject.getString("success");
-                    if(mTbPicture ==null || mTbPicture.size()==0){
+                    if(mTbPicture ==null ){
                         //根据泛型返回解析指定的类型
                         mTbPicture= gson.fromJson(jsonData, new TypeToken<List<TbPicture>>() {}.getType());
                     }else{
@@ -133,5 +160,23 @@ public class ReadCartoonActivity extends BaseActivity{
             }
         }
     }
+    private class GetNextEpisodeId extends AsyncTask<String, Integer ,String>{
+        @Override
+        protected String doInBackground(String... params) {
+            return MyOkhttp.get(params[0]);
+        }
 
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            if (!TextUtils.isEmpty(result)){
+                String jsonData = result;
+                if (result == "0"){
+                    Toast.makeText(getApplicationContext(),"漫画全部阅读完毕",Toast.LENGTH_SHORT).show();
+                }else {
+                    episodeId = result;
+                }
+            }
+        }
+    }
 }

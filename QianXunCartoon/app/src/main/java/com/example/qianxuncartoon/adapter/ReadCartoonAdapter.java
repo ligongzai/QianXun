@@ -41,9 +41,11 @@ public class ReadCartoonAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         Picasso.with(context).load(datas.get(position).getPictureurl()).into(((ReadHolder)holder).image);
     }
 
+
+
     @Override
     public int getItemCount() {
-        return datas.size();
+        return datas == null ? 0 :datas.size();
     }
 
     private class ReadHolder extends RecyclerView.ViewHolder{
