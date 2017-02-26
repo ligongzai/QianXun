@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
@@ -42,6 +43,8 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
 
     //底部按键布局
     private BottomNavigationView bottomNavigationView;
+
+    private long exitTime = 0;
 
 
     @Override
@@ -114,6 +117,30 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
 
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
 
+    }
+
+    @Override
+    public boolean dispatchKeyEvent(KeyEvent event) {
+        if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
+            if (event.getAction() == KeyEvent.ACTION_DOWN && event.getRepeatCount() == 0) {
+                this.exitApp();
+            }
+            return true;
+        }
+        return super.dispatchKeyEvent(event);
+    }
+
+    /**
+     * 退出程序
+     */
+    private void exitApp() {
+        // 判断2次点击事件时间
+        if ((System.currentTimeMillis() - exitTime) > 2000) {
+            Toast.makeText(MainActivity.this, "再按一次退出程序", Toast.LENGTH_SHORT).show();
+            exitTime = System.currentTimeMillis();
+        } else {
+            finish();
+        }
     }
 
 }

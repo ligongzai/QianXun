@@ -131,4 +131,11 @@ public class RequestManager {
         ImageLoader.ImageListener listener = ImageLoader.getImageListener(view, R.mipmap.bitbucket, R.mipmap.email);
         imageLoader.get(imgUrl,listener);
     }
+
+    public static void getUserPhoto(String imgUrl, ImageView view) {
+        initRequestQueue();
+        ImageLoader imageLoader = new ImageLoader(mRequestQueue, new BitmapCache());
+        ImageLoader.ImageListener listener = ImageLoader.getImageListener(view, R.mipmap.profile_picture, R.mipmap.profile_picture);
+        imageLoader.get(imgUrl,listener);
+    }
 }

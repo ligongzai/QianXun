@@ -52,6 +52,9 @@ public class Constant {
     //用户的用户类型
     public static final String IS_USER_TYPE="usertype";
 
+    //用户的头像
+    public static final String IS_USER_IMAGE="userimage";
+
 
 
 }

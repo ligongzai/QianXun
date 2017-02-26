@@ -46,7 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity {
     private AuthInfo mAuthInfo;
     /**
      * 封装了 "access_token"，"expires_in"，"refresh_token"，并提供了他们的管理功能
@@ -158,6 +158,7 @@ public class LoginActivity extends AppCompatActivity  {
                     UserPreference.save(Constant.IS_USER_NAME, user.getUsername());
                     UserPreference.save(Constant.IS_USER_PASSWORD, user.getUserpwd());
                     UserPreference.save(Constant.IS_USER_TYPE, String.valueOf(user.getUsertype()));
+                    UserPreference.save(Constant.IS_USER_IMAGE, user.getUserimage());
                     //otto框架的页面信息传递
                     //AppBus.getInstance().post(new BusEventData("somebody alive"));
 
@@ -187,7 +188,9 @@ public class LoginActivity extends AppCompatActivity  {
                 // 保存 Token 到 SharedPreferences
                 TokenKeeper.writeAccessToken(LoginActivity.this, mAccessToken);
                 Toast.makeText(LoginActivity.this,
-                        "授权成功" + mAccessToken.getToken(), Toast.LENGTH_SHORT).show();
+                        "授权成功", Toast.LENGTH_SHORT).show();
+                new login().execute(UrlConstance.APP_URL + UrlConstance.KEY_LOGIN_INFO + "?usertoken=" + mAccessToken.getToken() + "&usertype=1");
+
             } else {
                 // 以下几种情况，您会收到 Code：
                 // 1. 当您未在平台上注册的应用程序的包名与签名时；

@@ -17,15 +17,21 @@ public class UserPreference {
         }
         return mUserPreferences;
     }
-
+    //存储信息
     public static void save(String key, String value) {
         SharedPreferences.Editor editor = ensureIntializePreference().edit();
         editor.putString(key, value);
         editor.commit();
     }
-
+    //读取信息
     public static String read(String key, String defaultvalue) {
         return ensureIntializePreference().getString(key, defaultvalue);
+    }
+    //清空信息
+    public static void delete(){
+        SharedPreferences.Editor editor = ensureIntializePreference().edit();
+        editor.clear();
+        editor.commit();
     }
 
 }
