@@ -19,6 +19,7 @@ import com.example.qianxuncartoon.Constant;
 import com.example.qianxuncartoon.LogMsg;
 import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.activity.LoginActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -76,17 +77,17 @@ public class AccountFragment extends Fragment {
 //    }
 
 
-//    @Override
-//    public void onCreate(@Nullable Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        EventBus.getDefault().register(this);
-//    }
-
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
         EventBus.getDefault().register(this);
     }
+
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        EventBus.getDefault().register(this);
+//    }
 
     @Override
     public void onStop() {
@@ -94,8 +95,15 @@ public class AccountFragment extends Fragment {
         EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe(sticky = true)
-    //@Subscribe(threadMode = ThreadMode.MAIN)
+    @Override
+    public void onResume() {
+        super.onResume();
+        String username = UserPreference.read(Constant.IS_USER_NAME, null);
+        loginBtn.setText(username);
+    }
+
+    //@Subscribe(sticky = true)
+    @Subscribe(threadMode = ThreadMode.MAIN)
     public void onEventMainThread(LogMsg event) {
         String msg = event.getMsg();
         Log.d("harvic", msg);

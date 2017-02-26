@@ -162,16 +162,17 @@ public class LoginActivity extends AppCompatActivity  {
                     //AppBus.getInstance().post(new BusEventData("somebody alive"));
 
                     //eventbus发送语句
-                    //EventBus.getDefault().postSticky(new LogMsg("FirstEvent btn clicked"));
-
-                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                    startActivity(intent);
-                    //finish();
+                    //EventBus.getDefault().post(new LogMsg("FirstEvent btn clicked"));
+                    finishThisActivity();
                 } else {
                     Toast.makeText(LoginActivity.this, JSON.parseObject(result).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
                 }
             }
         }
+    }
+
+    private void finishThisActivity() {
+        finish();
     }
 
 

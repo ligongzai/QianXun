@@ -8,7 +8,10 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
+import com.example.qianxuncartoon.Constant;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.fragment.AccountFragment;
 import com.example.qianxuncartoon.fragment.HomePagerFragment;
 import com.example.qianxuncartoon.R;
@@ -48,6 +51,12 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
         setContentView(R.layout.activity_main);
         initViews();//初始化控件
         initDatas();//初始化数据
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
     }
 
     private void initDatas() {

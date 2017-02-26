@@ -32,11 +32,12 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.LoginActivity" />
+        <activity android:name=".activity.LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            android:launchMode="singleTask"/>
         <activity
             android:name=".activity.RegisterActivity"
             android:theme="@style/Translucent" />
-        <activity android:name=".activity.LoginSuccessActivity" />
         <activity
             android:name=".activity.CartoonIntro"
             android:theme="@style/AppTheme.NoActionBar" />
