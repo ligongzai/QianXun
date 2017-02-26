@@ -1,6 +1,6 @@
 [
     {
-        "outputFile": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-zh-rTW\\values-zh-rTW.xml",
+        "outputFile": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-zh-rTW\\values-zh-rTW.xml",
         "map": [
             {
                 "to": {
@@ -11,7 +11,7 @@
                     "endOffset": 106
                 },
                 "from": {
-                    "file": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "file": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
                     "position": {
                         "startLine": 2,
                         "startColumn": 4,
@@ -30,7 +30,7 @@
                     "endOffset": 184
                 },
                 "from": {
-                    "file": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "file": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
                     "position": {
                         "startLine": 3,
                         "startColumn": 4,
@@ -49,7 +49,7 @@
                     "endOffset": 241
                 },
                 "from": {
-                    "file": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
+                    "file": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\values-zh-rTW\\values-zh-rTW.xml",
                     "position": {
                         "startLine": 4,
                         "startColumn": 4,

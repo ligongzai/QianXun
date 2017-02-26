@@ -1,12 +1,9 @@
 package com.example.qianxuncartoon.fragment;
 
-
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.util.Pools;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,16 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.example.qianxuncartoon.Constant;
-import com.example.qianxuncartoon.HttpResponeCallBack;
 import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
-import com.example.qianxuncartoon.RequestApiData;
 import com.example.qianxuncartoon.UrlConstance;
-import com.example.qianxuncartoon.activity.LoginActivity;
 import com.example.qianxuncartoon.adapter.RecyclerViewAdapter;
 import com.example.qianxuncartoon.bean.FavorPrivateInfo;
+import com.example.qianxuncartoon.bean.HistoryPrivateInfo;
 import com.example.qianxuncartoon.http.MyOkhttp;
 import com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView;
 
@@ -31,16 +25,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 单个漫画展示的Fragment
+ * Created by Alex on 2017/2/25.
  */
-public class ContentFragment extends Fragment {
-    // 标志位，标志已经初始化完成，因为setUserVisibleHint是在onCreateView之前调用的，在视图未初始化的时候，在lazyLoad当中就使用的话，就会有空指针的异常
+
+public class ContentHistoryFragment extends Fragment {
     private boolean isPrepared;
     //标志当前页面是否可见
     private boolean isVisible;
     private PullLoadMoreRecyclerView mPullLoadMoreRecyclerView;
     private List mDataList = new ArrayList<>();
-    //  private List<FavorPrivateInfo> favorList = new ArrayList<>();
     private RecyclerViewAdapter mRecyclerViewAdapter;
     private String mTitle;
     private Handler handler;
@@ -121,19 +114,8 @@ public class ContentFragment extends Fragment {
 
     //向List里插入标题和描述信息
     private void setList() {
-        //匿名内部内实现Rannable接口
-//        runnable = new Runnable() {
-//            @Override
-//            public void run() {
-////        RequestApiData.getInstance().getFavorPrivateData(1, page, FavorPrivateInfo.class, ContentFragment.this);
-////                String s = MyOkhttp.get(UrlConstance.APP_URL + UrlConstance.KEY_FOVAR_PRIVATE + "?userId=1" + "&page=" + page);
-////                mDataList = changeComicDate(s);
-//
-//            }
-//        };
-//        handler = new Handler();
-//        handler.postDelayed(runnable, 500);
-        new getFavorData().execute(UrlConstance.APP_URL + UrlConstance.KEY_FOVAR_PRIVATE + "?userId=1" + "&page=" + page);
+
+        new getHistoryData().execute(UrlConstance.APP_URL + UrlConstance.KEY_HISTORY + "?userId=1" + "&page=" + page);
     }
 
     @Override
@@ -143,49 +125,11 @@ public class ContentFragment extends Fragment {
             handler.removeCallbacks(runnable);
     }
 
-    //    @Override
-//    public void onResponeStart(String apiName) {
-//
-//    }
-//
-//    @Override
-//    public void onLoading(String apiName, long count, long current) {
-//
-//    }
-//
-//    @Override
-//    public void onSuccess(String apiName, Object object) {
-//        if (UrlConstance.KEY_FOVAR_PRIVATE.equals(apiName)) {
-//            if (object != null && object instanceof JSONObject) {
-//                String jsonString = ((JSONObject) object).getString(Constant.SUC_MSG);
-//                if (jsonString != null) {
-//                    favorList = JSON.parseArray(jsonString, FavorPrivateInfo.class);
-//                } else {
-//                    Toast.makeText(QianXunApplication.getInstance(), ((JSONObject) object).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
-//                }
-//            }
-//        }
-//    }
-//
-//    @Override
-//    public void onFailure(String apiName, Throwable t, int errorNo, String strMsg) {
-//
-//    }
 
-    //将返回的json字符串封装成List
-    public List<FavorPrivateInfo> changeComicDate(String str) {
 
-        String jsonString = JSON.parseObject(str).getString(Constant.SUC_MSG);
-        List<FavorPrivateInfo> favorList = new ArrayList<>();
-        if (jsonString != null) {
-            favorList = JSON.parseArray(jsonString, FavorPrivateInfo.class);
-        } else {
-            Toast.makeText(QianXunApplication.getInstance(), JSON.parseObject(str).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
-        }
-        return favorList;
-    }
 
-    class getFavorData extends AsyncTask<String,Integer,String>{
+
+    class getHistoryData extends AsyncTask<String,Integer,String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -208,7 +152,7 @@ public class ContentFragment extends Fragment {
                     mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                 } else {
                     //Toast.makeText(QianXunApplication.getInstance(), JSON.parseObject(result).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
-                    //Toast.makeText(QianXunApplication.getInstance(), "没有更多了", Toast.LENGTH_LONG).show();
+                   // Toast.makeText(QianXunApplication.getInstance(), "没有更多了", Toast.LENGTH_LONG).show();
                     mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                     return;
                 }
@@ -218,4 +162,3 @@ public class ContentFragment extends Fragment {
 
     }
 }
-

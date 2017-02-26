@@ -1,6 +1,7 @@
 package com.example.qianxuncartoon.adapter;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -18,9 +19,11 @@ import com.example.qianxuncartoon.HttpResponeCallBack;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.RequestApiData;
 import com.example.qianxuncartoon.UrlConstance;
+import com.example.qianxuncartoon.activity.CartoonIntro;
 import com.example.qianxuncartoon.bean.FavorPrivateInfo;
 
 import java.util.List;
+import java.util.logging.StreamHandler;
 
 /**
  * 漫画展示小组件的适配器
@@ -44,7 +47,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
     public void onBindViewHolder(ViewHolder holder, int position) {
         holder.title.setText(dataList.get(position).getComicname());
         holder.content.setText(dataList.get(position).getComicdptn());
-        RequestApiData.getInstance().getFavorPrivateImage(dataList.get(position).getComiccover(),holder.showImage);
+        holder.idTag.setText(String.valueOf(dataList.get(position).getComicid()));
+        RequestApiData.getInstance().getFavorPrivateImage(dataList.get(position).getComiccover(), holder.showImage);
 
 
 //        holder.title.setText(dataList.get(position).split(",")[0]);
@@ -59,7 +63,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
 
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView title, content;
+        TextView title, content, idTag;
         ImageView showImage;
 
         public ViewHolder(View itemView) {
@@ -67,12 +71,16 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerViewAdapte
             title = (TextView) itemView.findViewById(R.id.title);
             content = (TextView) itemView.findViewById(R.id.content);
             showImage = (ImageView) itemView.findViewById(R.id.showImage);
-            itemView.setOnClickListener(new View.OnClickListener() {
+            idTag = (TextView) itemView.findViewById(R.id.idTag);itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast toast;
-                    toast = Toast.makeText(mActivity, "你点了一下哦", Toast.LENGTH_SHORT);
-                    toast.show();
+////                    Toast toast;
+////                    toast = Toast.makeText(mActivity, "你点了一下哦", Toast.LENGTH_SHORT);
+////                    toast.show();
+//
+                    Intent intent = new Intent(mActivity, CartoonIntro.class);
+                    intent.putExtra("url", (String) idTag.getText());
+                    mActivity.startActivity(intent);
                 }
             });
         }

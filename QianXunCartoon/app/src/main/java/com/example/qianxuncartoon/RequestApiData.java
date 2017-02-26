@@ -60,4 +60,13 @@ public class RequestApiData {
     public void getFavorPrivateImage(String imgUrl, ImageView view){
         RequestManager.getImage(imgUrl,view);
     }
+
+    //收藏一本漫画
+    public void markComic(int userId,int comicid,Class clazz,HttpResponeCallBack callback){
+        String tagUrl= UrlConstance.KEY_MARK;
+        HashMap<String,String> parameter= new HashMap<>();
+        parameter.put("userId", String.valueOf(userId));
+        parameter.put("comicId", String.valueOf(comicid));
+        RequestManager.post(UrlConstance.APP_URL,tagUrl,parameter,clazz,callback);
+    }
 }

@@ -16,6 +16,7 @@ import com.alibaba.fastjson.JSON;
 import com.example.qianxuncartoon.AppBus;
 import com.example.qianxuncartoon.BusEventData;
 import com.example.qianxuncartoon.Constant;
+import com.example.qianxuncartoon.LogMsg;
 import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.activity.LoginActivity;
@@ -34,11 +35,6 @@ public class AccountFragment extends Fragment {
     private Button loginBtn;
 
 
-
-
-
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -49,7 +45,7 @@ public class AccountFragment extends Fragment {
         loginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),LoginActivity.class);
+                Intent intent = new Intent(getActivity(), LoginActivity.class);
                 startActivity(intent);
             }
 
@@ -58,33 +54,55 @@ public class AccountFragment extends Fragment {
         return view;
 
     }
+    //otto总线的注册与反注册
+//    @Override
+//    public void onStart() {
+//        super.onStart();
+//        //注册到bus事件总线中
+//        AppBus.getInstance().register(this);
+//    }
+//
+//    @Override
+//    public void onStop() {
+//        super.onStop();
+//        //反注册
+//        AppBus.getInstance().unregister(this);
+//    }
+
+    //otto总线的订阅者
+//    @Subscribe
+//    public void setContent(BusEventData data) {
+//        loginBtn.setText(data.getContent());
+//    }
+
+
+//    @Override
+//    public void onCreate(@Nullable Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//        EventBus.getDefault().register(this);
+//    }
 
     @Override
     public void onStart() {
         super.onStart();
-        //注册到bus事件总线中
-        AppBus.getInstance().register(this);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        AppBus.getInstance().unregister(this);
+        EventBus.getDefault().unregister(this);
     }
 
-    @Subscribe
-    public void setContent(BusEventData data) {
-        loginBtn.setText(data.getContent());
+    @Subscribe(sticky = true)
+    //@Subscribe(threadMode = ThreadMode.MAIN)
+    public void onEventMainThread(LogMsg event) {
+        String msg = event.getMsg();
+        Log.d("harvic", msg);
+        Toast.makeText(QianXunApplication.getInstance(), msg, Toast.LENGTH_LONG).show();
+        loginBtn.setText(msg);
+        //Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
     }
-//    @Subscribe(sticky = true)
-//    public void onEventMainThread(LogMsg event) {
-//        String msg = event.getMsg();
-//        Log.d("harvic", msg);
-//        Toast.makeText(QianXunApplication.getInstance(), msg, Toast.LENGTH_LONG).show();
-//        loginBtn.setText(msg);
-//       // Toast.makeText(this, msg, Toast.LENGTH_LONG).show();
-//    }
-
 
 
 }

@@ -11,4 +11,8 @@ public class UrlConstance {
     public static final String APP_URL = "http://192.168.191.1:8080";
     //个人收藏接口
     public static final String KEY_FOVAR_PRIVATE = "/qxComic/favorprivate";
+    //mark收藏接口
+    public static final String KEY_MARK="/qxComic/mark";
+    //观看历史接口
+    public static final String KEY_HISTORY="/qxComic/historyprivate";
 }

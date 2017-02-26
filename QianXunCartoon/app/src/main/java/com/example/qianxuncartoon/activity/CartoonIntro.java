@@ -18,7 +18,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.qianxuncartoon.Constant;
+import com.example.qianxuncartoon.HttpResponeCallBack;
+import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
+import com.example.qianxuncartoon.RequestApiData;
+import com.example.qianxuncartoon.UrlConstance;
 import com.example.qianxuncartoon.adapter.Recyclerchapter;
 import com.example.qianxuncartoon.algorithm.Fastblur;
 import com.example.qianxuncartoon.http.MyOkhttp;
@@ -36,8 +41,9 @@ import java.util.List;
 import static com.example.qianxuncartoon.adapter.Recyclerchapter.*;
 
 
-public class CartoonIntro extends AppCompatActivity implements View.OnClickListener {
-    
+public class CartoonIntro extends AppCompatActivity implements View.OnClickListener ,HttpResponeCallBack{
+
+  //  private CartoonDetail mCartoonDetail;
     private ImageView cartoon_intro_img_blur;
     private ImageView cartoon_intro_img_original;
     private TextView cartoon_intro_itsname;
@@ -169,7 +175,10 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_cartooninfo_collect:
-                Toast.makeText(getApplicationContext(),"你点击了收藏",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getApplicationContext(),"你点击了收藏",Toast.LENGTH_SHORT).show();
+                //访问网路
+                //Object obj=new Object();
+                RequestApiData.getInstance().markComic(1,Integer.parseInt(getIntent().getStringExtra("url")), QianXunApplication.class,CartoonIntro.this);
                 break;
             case R.id.btn_cartooninfo_beginread:
                 Toast.makeText(getApplicationContext(),"你点击了开始阅读",Toast.LENGTH_SHORT).show();
@@ -181,6 +190,35 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(),"你点击了选择源",Toast.LENGTH_SHORT).show();
                 break;
         }
+    }
+
+    @Override
+    public void onResponeStart(String apiName) {
+
+    }
+
+    @Override
+    public void onLoading(String apiName, long count, long current) {
+
+    }
+
+    @Override
+    public void onSuccess(String apiName, Object object) {
+        if (UrlConstance.KEY_MARK.equals(apiName)){
+            if (object != null && object instanceof com.alibaba.fastjson.JSONObject){
+                String jsonString = ((com.alibaba.fastjson.JSONObject) object).getString(Constant.SUC_MSG);
+                if (jsonString != null){
+                    Toast.makeText(CartoonIntro.this, ((com.alibaba.fastjson.JSONObject) object).getString(Constant.SUC_MSG), Toast.LENGTH_LONG).show();
+                }else {
+                    Toast.makeText(CartoonIntro.this, ((com.alibaba.fastjson.JSONObject) object).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
+                }
+            }
+        }
+    }
+
+    @Override
+    public void onFailure(String apiName, Throwable t, int errorNo, String strMsg) {
+
     }
 
     //线程池，工作者线程

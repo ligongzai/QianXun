@@ -122,7 +122,7 @@ public class TraceFragment extends BaseFragment {
         newfragment.setArguments(data);//设置收藏Fragment的标题和id
         adapter.addFrag(newfragment, getString(R.string.page1)); //向FragmentList和TitleList中分别加入fragment对象和标题
 
-        newfragment = new ContentFragment();
+        newfragment = new ContentHistoryFragment();
         data = new Bundle();
         data.putInt("id", 1);
         data.putString("title", getString(R.string.page2));
