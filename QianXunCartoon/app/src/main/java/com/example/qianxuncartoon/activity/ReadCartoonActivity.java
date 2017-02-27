@@ -58,7 +58,7 @@ public class ReadCartoonActivity extends BaseActivity{
 
     private void initData() {
         if (UserPreference.isLogin()){
-            userId = UserPreference.read(Constant.IS_USER_NAME, null);
+            userId = UserPreference.read(Constant.IS_USER_ID, null);
         }else {
             userId = "1";
         }
@@ -86,7 +86,7 @@ public class ReadCartoonActivity extends BaseActivity{
                 //0：当前屏幕停止滚动；1时：屏幕在滚动 且 用户仍在触碰或手指还在屏幕上；2时：随用户的操作，屏幕上产生的惯性滑动；
                 // 滑动状态停止并且剩余少于两个item时，自动加载下一页
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem +2>=mLinearLayoutManager.getItemCount()) {
+                        && lastVisibleItem +1>=mLinearLayoutManager.getItemCount()) {
                     loadMore();
                 }
             }
@@ -109,8 +109,9 @@ public class ReadCartoonActivity extends BaseActivity{
             getNextEpisode();
             return;
         }
-        getData();
         ++page;
+        getData();
+
 
     }
 
@@ -127,11 +128,9 @@ public class ReadCartoonActivity extends BaseActivity{
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                mTbPicture.clear();
+
                 new GetNextEpisodeId().execute(MainActivity.URL_PREFIX +"/next?episodeId=" + episodeId);
-                page = 1;
-                dataIsExecutive = false;
-                getData();
+
 
             }
         });
@@ -197,6 +196,10 @@ public class ReadCartoonActivity extends BaseActivity{
                     Toast.makeText(getApplicationContext(),"漫画全部阅读完毕",Toast.LENGTH_SHORT).show();
                 }else {
                     episodeId = result;
+                    page = 1;
+                    dataIsExecutive = false;
+                    mTbPicture.clear();
+                    getData();
                 }
             }
         }
