@@ -39,21 +39,19 @@ import java.util.List;
 
 /**
  * Created by 咸鱼 on 2017/2/15.
- *
+ * <p>
  * 首页界面漫画展示具体，和首页tab有关
  */
 
 public class ContentHomeFragment extends Fragment {
 
-    // 标志位
-    private boolean isPrepared;
-    //标志当前页面是否可见
-    private boolean isVisible;
+
+    private boolean isPrepared;// 标志位
+    private boolean isVisible;//标志当前页面是否可见
     private boolean dataIsExecutive = false;
     private RecyclerView mrecyclerView;
     private RecyclerHomepagerAdapter mAdapter;
     private GridLayoutManager mgridLayoutManager;
-
     private SwipeRefreshLayout swipeRefreshLayout;
     private int page = 1;
     private int lastVisibleItem;//控制加载更新
@@ -64,19 +62,17 @@ public class ContentHomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_content_homepager, container,false);
+        View view = inflater.inflate(R.layout.fragment_content_homepager, container, false);
         return view;
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()){
+        if (getUserVisibleHint()) {
             isVisible = true;
             onVisible();
-        }else{
+        } else {
             isVisible = false;
             onInvisible();
         }
@@ -86,8 +82,7 @@ public class ContentHomeFragment extends Fragment {
     }
 
     private void onVisible() {
-        //实现懒加载
-        lazyLoad();
+        lazyLoad();//实现懒加载
     }
 
     private void lazyLoad() {
@@ -98,52 +93,50 @@ public class ContentHomeFragment extends Fragment {
     }
 
     private void setGridList() {
-        new GetData().execute(MainActivity.URL_PREFIX+"/class?classId=" + cartoon_type + "&page="+page);
+        new GetData().execute(MainActivity.URL_PREFIX + "/class?classId=" + cartoon_type + "&page=" + page);
     }
 
 
     @Override
-    public void onViewCreated(View view, Bundle savedInstanceState){
-        super.onViewCreated(view,savedInstanceState);
-       cartoon_type = getArguments().getInt("classid");
-       //判断网络部分
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        cartoon_type = getArguments().getInt("classid");
+        //判断网络部分
         NetworkInfo netIntfo = null;
         Activity act = (Activity) getContext();
-        try{
+        try {
             ConnectivityManager cm = (ConnectivityManager) getActivity().getSystemService(act.CONNECTIVITY_SERVICE);
             netIntfo = cm.getActiveNetworkInfo();
-        }catch (Exception e){
-            Toast.makeText(act,"没有网络权限，请给予相关权限",Toast.LENGTH_SHORT).show();
+        } catch (Exception e) {
+            Toast.makeText(act, "没有网络权限，请给予相关权限", Toast.LENGTH_SHORT).show();
         }
-        //没有网络
-        if (netIntfo == null){
+        if (netIntfo == null) {
             return;
         }
         //初始化布局
         mrecyclerView = (RecyclerView) view.findViewById(R.id.recycler_homepager);
-        mgridLayoutManager = new GridLayoutManager(getContext(), 3 ,GridLayoutManager.VERTICAL,false);
+        mgridLayoutManager = new GridLayoutManager(getContext(), 3, GridLayoutManager.VERTICAL, false);
         mrecyclerView.setLayoutManager(mgridLayoutManager);
-
-       swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grid_swipe_refresh);
+        swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grid_swipe_refresh);
         // 这句话是为了，第一次进入页面的时候显示加载进度条
-       swipeRefreshLayout.setProgressViewOffset(false, 0,  (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
         isPrepared = true;
         lazyLoad();
 
-    //   new GetData().execute(MainActivity.URL_PREFIX+"/hot?page="+page);
-       setListener(); //设置监听事件
+        //   new GetData().execute(MainActivity.URL_PREFIX+"/hot?page="+page);
+        setListener(); //设置监听事件
     }
 
     private void setListener() {
         //swipeRefreshLayout刷新监听
-        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener(){
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
 
             @Override
             public void onRefresh() {
                 swipeRefreshLayout.setRefreshing(false);
                 page = 1;
-          //      cartooncovers.clear();
-          //      setGridList();
+                //      cartooncovers.clear();
+                //      setGridList();
             }
         });
         //滑动到底部自动加载刷新
@@ -154,8 +147,8 @@ public class ContentHomeFragment extends Fragment {
                 //0：当前屏幕停止滚动；1时：屏幕在滚动 且 用户仍在触碰或手指还在屏幕上；2时：随用户的操作，屏幕上产生的惯性滑动；
                 // 滑动状态停止并且剩余少于两个item时，自动加载下一页
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem +2>=mgridLayoutManager.getItemCount()) {
-                        loadMore();
+                        && lastVisibleItem + 2 >= mgridLayoutManager.getItemCount()) {
+                    loadMore();
                 }
             }
 
@@ -170,8 +163,8 @@ public class ContentHomeFragment extends Fragment {
     }
 
     private void loadMore() {
-        if ( dataIsExecutive ){
-            Toast.makeText(getContext(),"漫画到底部了！",Toast.LENGTH_SHORT);
+        if (dataIsExecutive) {
+            Toast.makeText(getContext(), "漫画到底部了！", Toast.LENGTH_SHORT);
             return;
         }
         ++page;
@@ -179,7 +172,7 @@ public class ContentHomeFragment extends Fragment {
     }
 
     //线程池,工作者线程
-    class GetData extends AsyncTask<String ,Integer, String> {
+    class GetData extends AsyncTask<String, Integer, String> {
 
         //此方法会在后台任务执行前被调用，用于进行一些准备工作
         @Override
@@ -200,64 +193,66 @@ public class ContentHomeFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(!TextUtils.isEmpty(result)){
+            if (!TextUtils.isEmpty(result)) {
                 JSONObject jsonObject;
-                Gson gson=new Gson();
+                Gson gson = new Gson();
                 String jsonData = null;
 
                 try {
                     jsonObject = new JSONObject(result);
-                    if (jsonObject.has("failure")){
+                    if (jsonObject.has("failure")) {
                         dataIsExecutive = true;
                         swipeRefreshLayout.setRefreshing(false);
                         return;
-                    } else if (jsonObject.has("success")){
+                    } else if (jsonObject.has("success")) {
                         jsonData = jsonObject.getString("success");
-                    }else{
+                    } else {
                         jsonData = result;
                     }
 
-                }catch (JSONException e){
+                } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                if(cartooncovers==null||cartooncovers.size()==0){
+                if (cartooncovers == null || cartooncovers.size() == 0) {
                     //根据泛型返回解析指定的类型
-                    cartooncovers= gson.fromJson(jsonData, new TypeToken<List<CartoonCover>>() {}.getType());
+                    cartooncovers = gson.fromJson(jsonData, new TypeToken<List<CartoonCover>>() {
+                    }.getType());
 
-            //        CartoonCover pages=new CartoonCover();
-                   // pages.setPage(page);
-             //       cartooncovers.add(pages);//在数据链表中加入一个用于显示页数的item
-                }else{
-                    List<CartoonCover> more = gson.fromJson(jsonData, new TypeToken<List<CartoonCover>>() {}.getType());
+                    //        CartoonCover pages=new CartoonCover();
+                    // pages.setPage(page);
+                    //       cartooncovers.add(pages);//在数据链表中加入一个用于显示页数的item
+                } else {
+                    List<CartoonCover> more = gson.fromJson(jsonData, new TypeToken<List<CartoonCover>>() {
+                    }.getType());
 //                    cartooncovers.addAll(more);
 
-          //          CartoonCover pages = new CartoonCover();
-          //          pages.setPage(page);
+                    //          CartoonCover pages = new CartoonCover();
+                    //          pages.setPage(page);
                     cartooncovers.addAll(more);//在数据链表中加入一个用于显示页数的item
                 }
-                if (mAdapter == null ){
-                  //设置适配器
-                   mAdapter = new RecyclerHomepagerAdapter(getActivity(),cartooncovers);
-                   mrecyclerView.setAdapter(mAdapter);
+                if (mAdapter == null) {
+                    //设置适配器
+                    mAdapter = new RecyclerHomepagerAdapter(getActivity(), cartooncovers);
+                    mrecyclerView.setAdapter(mAdapter);
 
                     //实现适配器自定义的点击监听
-                    mAdapter.setOnItemClickListener(new RecyclerHomepagerAdapter.OnRecyclerViewItemClickListener(){
+                    mAdapter.setOnItemClickListener(new RecyclerHomepagerAdapter.OnRecyclerViewItemClickListener() {
 
                         @Override
                         public void onItemClick(View view) {
-                           String comcid = (String) ((TextView)view.findViewById(R.id.recycler_item_comic_id)).getText();
-                          /**
-                           * @desciption 测试数据
-                           * **/
-                      //      String position="results"+mrecyclerView.getChildAdapterPosition(view);
+                            String comcid = (String) ((TextView) view.findViewById(R.id.recycler_item_comic_id)).getText();
+                            /**
+                             * @desciption 测试数据
+                             * **/
+                            //      String position="results"+mrecyclerView.getChildAdapterPosition(view);
 
                             //与其它Activity进行通信
-                           Intent intent = new Intent(getActivity(), CartoonIntro.class);
-                           intent.putExtra("url", comcid);
-                           startActivity(intent);
+                            Intent intent = new Intent(getActivity(), CartoonIntro.class);
+                            intent.putExtra("url", comcid);
+                            startActivity(intent);
                         }
                     });
-                }else{
+                } else {
                     //让适配器刷新数据
                     mAdapter.notifyDataSetChanged();
                 }
