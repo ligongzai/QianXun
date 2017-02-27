@@ -1,5 +1,6 @@
 package com.example.qianxuncartoon.fragment;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -9,11 +10,13 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.activity.MainActivity;
+import com.example.qianxuncartoon.activity.SearchCartoon;
 import com.example.qianxuncartoon.adapter.ViewPagerAdapter;
 import com.example.qianxuncartoon.http.MyOkhttp;
 import com.example.qianxuncartoon.model.TbClass;
@@ -55,8 +58,21 @@ public class HomePagerFragment extends Fragment {
 
     //初始化菜单栏
     private void initToolbar() {
-        mToolbar.setTitle("首页");
-        mToolbar.inflateMenu(R.menu.menu_homepager);
+       mToolbar.setTitle("千寻漫画");
+       mToolbar.inflateMenu(R.menu.menu_homepager);
+       mToolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
+           @Override
+           public boolean onMenuItemClick(MenuItem item) {
+               int menuItemId = item.getItemId();
+               switch (menuItemId){
+                   case R.id.search_homepager:
+                       Intent intent = new Intent(getActivity(), SearchCartoon.class);
+                       startActivity(intent);
+                       break;
+               }
+               return true;
+           }
+       });
     }
 
     private void initWidget(View view) {

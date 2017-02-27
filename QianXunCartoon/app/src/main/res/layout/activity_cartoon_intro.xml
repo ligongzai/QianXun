@@ -39,7 +39,6 @@
             android:layout_height="145dp"
             android:layout_marginTop="40dp"
             android:layout_marginLeft="20dp"
-            android:background="@color/black"
             android:scaleType="fitXY"/>  <!-- 清晰背景封面图 -->
         <LinearLayout
             android:layout_width="wrap_content"

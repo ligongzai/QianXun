@@ -1,0 +1,60 @@
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center"
+    android:background="@android:color/white"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:orientation="vertical"
+    android:padding="10dp"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="亲可以选下漫画源~~"
+            android:textSize="20dp"
+            android:textColor="?attr/colorAccent"/>
+
+        <Button
+            android:id="@+id/btn_bottom_sheet_1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:text="非常爱漫"/>
+        
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/linebelow"/>
+
+        <Button
+            android:id="@+id/btn_bottom_sheet_2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:text="4399动漫"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/linebelow"/>
+
+        <Button
+            android:id="@+id/btn_bottom_sheet_3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@null"
+            android:layout_margin="10dp"
+            android:text="暴走漫画"/>
+
+    </LinearLayout>
+
+</android.support.v7.widget.CardView>

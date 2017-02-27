@@ -6,6 +6,7 @@ import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -36,6 +37,7 @@ import com.squareup.picasso.Picasso;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Collection;
 import java.util.List;
 
 import static com.example.qianxuncartoon.adapter.Recyclerchapter.*;
@@ -55,7 +57,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     private Button btn_cartooninfo_collect;
     private Button btn_cartooninfo_beginread;
     private TbComic mTbComic;
-    private List<TbEpisode> mTbEpisode;
+    private List<TbEpisode> mTbEpisode = null;
     private RecyclerView recycler_singlecartoon;
     private Recyclerchapter madapter = null;
     private GridLayoutManager mgridLayoutManager;
@@ -119,9 +121,12 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_download.setOnClickListener(this);
         ic_text_getsource.setOnClickListener(this);
 
+        getEpisode(site);
+    }
+
+    private void getEpisode(int site){
         //开线程获取集数相关信息
         new GetEpisode().execute(MainActivity.URL_PREFIX + URL_EPISODES + "siteId=" + site + "&comicId=" +mTbComic.getComicid());
-
     }
 
     //主线程更新集数页面
@@ -136,12 +141,12 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
 
                     Intent intent = new Intent(getApplicationContext(),ReadCartoonActivity.class);
                     String i = (String) ((TextView)view.findViewById(R.id.gridv_chapter_epiid)).getText();
-                    //此处要加入观看者信息
-                    intent.putExtra("UserId","1");
                     intent.putExtra("EpisodeId",i);
                     startActivity(intent);
                 }
             });
+        }else {
+            madapter.notifyDataSetChanged();
         }
     }
 
@@ -162,7 +167,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
 
     private Bitmap blur(Bitmap bkg, View view) {
         long startMs = System.currentTimeMillis();
-        float radius = 20;
+        float radius = 60;
 
         Bitmap overlay = Bitmap.createBitmap((int)(view.getMeasuredWidth()), (int)(view.getMeasuredHeight()), Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(overlay);
@@ -187,7 +192,40 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 Toast.makeText(getApplicationContext(),"你点击了下载",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.ic_text_getsource:
-                Toast.makeText(getApplicationContext(),"你点击了选择源",Toast.LENGTH_SHORT).show();
+                final BottomSheetDialog dialog = new BottomSheetDialog(this);
+                dialog.setContentView(R.layout.view_bottom_sheet);
+                dialog.show();
+                ((Button)dialog.findViewById(R.id.btn_bottom_sheet_1)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        if (site == 1){
+                            Toast.makeText(getApplicationContext(),"当前来源就是非常爱漫",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                            getEpisode(1);
+
+                    }
+                });
+                ((Button)dialog.findViewById(R.id.btn_bottom_sheet_2)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        dialog.dismiss();
+                        if (site == 2){
+                            Toast.makeText(getApplicationContext(),"当前来源就是4399漫画",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        getEpisode(2);
+
+                    }
+                });
+                ((Button)dialog.findViewById(R.id.btn_bottom_sheet_3)).setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Toast.makeText(getApplicationContext(),"本漫画在暴走漫画中无资源",Toast.LENGTH_SHORT).show();
+                        dialog.dismiss();
+                    }
+                });
                 break;
         }
     }
@@ -259,6 +297,10 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
+            //就是无这个站点漫画
+            if (result == null){
+                Toast.makeText(getApplicationContext(),"本漫画在此来源网站中无资源",Toast.LENGTH_SHORT).show();
+            }
             if (!TextUtils.isEmpty(result)){
                 JSONObject jsonObject;
                 String jsonData = null;
@@ -266,7 +308,19 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 try {
                     jsonObject = new JSONObject(result);
                     jsonData = jsonObject.getString("success");
-                    mTbEpisode = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
+                    if (mTbEpisode == null){
+                        mTbEpisode = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
+                    }else {
+                        mTbEpisode.clear();
+                        List<TbEpisode> more = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
+                        mTbEpisode.addAll(more);
+                        if (site == 1){
+                            site = 2;
+                        }else {
+                            site = 1;
+                        }
+                    }
+
                     upDateEpisode();
                 } catch (JSONException e) {
                     e.printStackTrace();

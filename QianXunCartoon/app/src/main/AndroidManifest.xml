@@ -32,19 +32,21 @@
         <activity
             android:name=".activity.MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".activity.LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            android:launchMode="singleTask"/>
+        <activity
+            android:name=".activity.LoginActivity"
+            android:launchMode="singleTask"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".activity.RegisterActivity"
             android:theme="@style/Translucent" />
         <activity
             android:name=".activity.CartoonIntro"
             android:theme="@style/AppTheme.NoActionBar" />
-
-        <activity android:name=".activity.ReadCartoonActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".activity.ReadCartoonActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".activity.SearchCartoon"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

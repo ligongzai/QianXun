@@ -9,7 +9,9 @@ import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.example.qianxuncartoon.Constant;
 import com.example.qianxuncartoon.R;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.adapter.ReadCartoonAdapter;
 import com.example.qianxuncartoon.http.MyOkhttp;
 import com.example.qianxuncartoon.model.CartoonCover;
@@ -32,6 +34,7 @@ public class ReadCartoonActivity extends BaseActivity{
     private ReadCartoonAdapter mAdapter;
     private RecyclerView mRecyclerView;
     private LinearLayoutManager mLinearLayoutManager;
+    private String userId;
     private boolean dataIsExecutive = false;
     private int lastVisibleItem;//控制加载更新
     private int page = 1;
@@ -43,7 +46,22 @@ public class ReadCartoonActivity extends BaseActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_readcaroon);
         initWidget();
+        initData();
         getData();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        finish();
+    }
+
+    private void initData() {
+        if (UserPreference.isLogin()){
+            userId = UserPreference.read(Constant.IS_USER_NAME, null);
+        }else {
+            userId = "1";
+        }
     }
 
     private void initWidget() {
@@ -56,7 +74,7 @@ public class ReadCartoonActivity extends BaseActivity{
 
     private void getData() {
         new GetData().execute(MainActivity.URL_PREFIX + URL_READ + "episodeId=" + episodeId
-              + "&userId=" + getIntent().getStringExtra("UserId") + "&page=" +page);
+              + "&userId=" + userId + "&page=" +page);
     }
 
     private void setListener() {
@@ -80,17 +98,20 @@ public class ReadCartoonActivity extends BaseActivity{
                 lastVisibleItem = mLinearLayoutManager.findLastVisibleItemPosition();
 
             }
+
         });
     }
 
     //加载更多
     private void loadMore() {
+
         if (dataIsExecutive){
             getNextEpisode();
             return;
         }
-        ++page;
         getData();
+        ++page;
+
     }
 
     private void getNextEpisode() {
@@ -142,6 +163,7 @@ public class ReadCartoonActivity extends BaseActivity{
                     jsonObject = new JSONObject(result);
                     if (jsonObject.has("failure")){
                         dataIsExecutive = true;
+                        getNextEpisode();
                         return;
                     }
                     Gson gson = new Gson();

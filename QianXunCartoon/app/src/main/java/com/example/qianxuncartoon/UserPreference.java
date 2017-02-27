@@ -34,5 +34,11 @@ public class UserPreference {
         editor.commit();
     }
 
+    public static Boolean isLogin(){
+        if (mUserPreferences == null){
+            return false;
+        }
+        return true;
+    }
 }
 

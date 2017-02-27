@@ -1,11 +1,27 @@
 [
     {
+        "merged": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_login_button_with_account_text.xml",
+        "source": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_login_button_with_account_text.xml"
+    },
+    {
         "merged": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_login_button_with_account_text.xml",
         "source": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_login_button_with_account_text.xml"
     },
     {
         "merged": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_login_button_with_frame_logo.xml",
         "source": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_login_button_with_frame_logo.xml"
+    },
+    {
+        "merged": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_login_button_with_frame_logo.xml",
+        "source": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_login_button_with_frame_logo.xml"
+    },
+    {
+        "merged": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_button_grey.xml",
+        "source": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_button_grey.xml"
+    },
+    {
+        "merged": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_button_blue.xml",
+        "source": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_button_blue.xml"
     },
     {
         "merged": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_button_grey.xml",
@@ -18,5 +34,9 @@
     {
         "merged": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_button_blue.xml",
         "source": "F:\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_button_blue.xml"
+    },
+    {
+        "merged": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\res\\merged\\androidTest\\debug\\drawable\\com_sina_weibo_sdk_login_button_with_original_logo.xml",
+        "source": "D:\\AndroidProjectAbout\\QianXun\\QianXunCartoon\\weiboSDK\\build\\intermediates\\bundles\\debug\\res\\drawable\\com_sina_weibo_sdk_login_button_with_original_logo.xml"
     }
 ]
