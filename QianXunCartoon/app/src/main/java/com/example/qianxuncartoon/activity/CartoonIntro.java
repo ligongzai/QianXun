@@ -354,17 +354,19 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            //就是无这个站点漫画
-            if (result == null){
-                site = doubleSite;
-                Toast.makeText(getApplicationContext(),"本漫画在此来源网站中无资源",Toast.LENGTH_SHORT).show();
-            }
+
             if (!TextUtils.isEmpty(result)){
                 JSONObject jsonObject;
                 String jsonData = null;
                 Gson gson = new Gson();
                 try {
                     jsonObject = new JSONObject(result);
+                    if (jsonObject.has("failure")){
+                        //就是无这个站点漫画
+                        site = doubleSite;
+                        Toast.makeText(getApplicationContext(),"本漫画在此来源网站中无资源",Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     jsonData = jsonObject.getString("success");
                     if (mTbEpisode == null){
                         mTbEpisode = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
