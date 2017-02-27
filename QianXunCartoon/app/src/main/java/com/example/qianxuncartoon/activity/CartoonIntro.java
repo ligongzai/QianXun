@@ -5,7 +5,6 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -25,6 +24,7 @@ import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.RequestApiData;
 import com.example.qianxuncartoon.UrlConstance;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.adapter.Recyclerchapter;
 import com.example.qianxuncartoon.algorithm.Fastblur;
 import com.example.qianxuncartoon.http.MyOkhttp;
@@ -36,8 +36,6 @@ import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.Collection;
 import java.util.List;
 
 import static com.example.qianxuncartoon.adapter.Recyclerchapter.*;
@@ -63,9 +61,11 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     private GridLayoutManager mgridLayoutManager;
 
     private int site = 1; //站点id
+    private String userId;
 
     private final String URL_SINGLECOMIC = "/singleComic?comicId=";
     private final String URL_EPISODES = "/source?";
+    private final String URL_READSTART = "/startReading?";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,6 +97,13 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_download.setText("\ue62a");
         ic_text_getsource.setTypeface(iconfont);
         ic_text_getsource.setText("\ue690");
+
+        if (UserPreference.isLogin()){
+            userId = UserPreference.read(Constant.IS_USER_ID, null);
+        }else {
+            userId = "1";
+        }
+
     }
 
     private void getData() {
@@ -122,6 +129,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_getsource.setOnClickListener(this);
 
         getEpisode(site);
+
     }
 
     private void getEpisode(int site){
@@ -134,7 +142,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         if (madapter == null){
             madapter = new Recyclerchapter(getApplicationContext(),mTbEpisode);
             recycler_singlecartoon.setAdapter(madapter);
-
             madapter.setOnItemClickListener(new OnRecyclerViewItemClickListener() {
                 @Override
                 public void onItemClick(View view) {
@@ -142,6 +149,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                     Intent intent = new Intent(getApplicationContext(),ReadCartoonActivity.class);
                     String i = (String) ((TextView)view.findViewById(R.id.gridv_chapter_epiid)).getText();
                     intent.putExtra("EpisodeId",i);
+                    intent.putExtra("page","1");
                     startActivity(intent);
                 }
             });
@@ -185,8 +193,10 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 //Object obj=new Object();
                 RequestApiData.getInstance().markComic(1,Integer.parseInt(getIntent().getStringExtra("url")), QianXunApplication.class,CartoonIntro.this);
                 break;
+            //点击开始阅读
             case R.id.btn_cartooninfo_beginread:
-                Toast.makeText(getApplicationContext(),"你点击了开始阅读",Toast.LENGTH_SHORT).show();
+                new GetstartReadData().execute(MainActivity.URL_PREFIX+URL_READSTART+"comicId="+mTbComic.getComicid()
+                         + "&userId=" + userId +"&siteId=" + site);
                 break;
             case R.id.ic_text_download:
                 Toast.makeText(getApplicationContext(),"你点击了下载",Toast.LENGTH_SHORT).show();
@@ -331,5 +341,40 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
 
     }
 
+    private class GetstartReadData extends AsyncTask<String , String ,String>{
 
+        @Override
+        protected String doInBackground(String... params) {
+            return MyOkhttp.get(params[0]);
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            super.onPostExecute(result);
+            //就是无这个站点漫画
+            if (result == null){
+                Toast.makeText(getApplicationContext(),"本漫画在此来源网站中无资源",Toast.LENGTH_SHORT).show();
+            }
+            if (!TextUtils.isEmpty(result)){
+                JSONObject jsonObject;
+                try {
+                    jsonObject = new JSONObject(result);
+                    String[] jsonData = jsonObject.getString("success").split("#");
+
+                    Intent intent = new Intent(getApplicationContext(),ReadCartoonActivity.class);
+                    intent.putExtra("EpisodeId",jsonData[0]);
+                    intent.putExtra("page",jsonData[2]);
+                    startActivity(intent);
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+
+
+            }
+
+        }
+
+    }
 }

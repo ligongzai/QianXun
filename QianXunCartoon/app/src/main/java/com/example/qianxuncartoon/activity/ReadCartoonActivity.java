@@ -37,7 +37,7 @@ public class ReadCartoonActivity extends BaseActivity{
     private String userId;
     private boolean dataIsExecutive = false;
     private int lastVisibleItem;//控制加载更新
-    private int page = 1;
+    private int page;
     private String episodeId;
     private String URL_READ = "/episode?";
 
@@ -62,6 +62,7 @@ public class ReadCartoonActivity extends BaseActivity{
         }else {
             userId = "1";
         }
+        page =  Integer.valueOf(getIntent().getStringExtra("page"));
     }
 
     private void initWidget() {
@@ -128,10 +129,7 @@ public class ReadCartoonActivity extends BaseActivity{
         builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-
-                new GetNextEpisodeId().execute(MainActivity.URL_PREFIX +"/next?episodeId=" + episodeId);
-
-
+            new GetNextEpisodeId().execute(MainActivity.URL_PREFIX +"/next?episodeId=" + episodeId);
             }
         });
         builder.show();
@@ -147,6 +145,8 @@ public class ReadCartoonActivity extends BaseActivity{
     }
 
     private class GetData extends AsyncTask<String, Integer ,String>{
+
+
         @Override
         protected String doInBackground(String... params) {
             return MyOkhttp.get(params[0]);
@@ -193,7 +193,8 @@ public class ReadCartoonActivity extends BaseActivity{
             if (!TextUtils.isEmpty(result)){
                 String jsonData = result;
                 if (result == "0"){
-                    Toast.makeText(getApplicationContext(),"漫画全部阅读完毕",Toast.LENGTH_SHORT).show();
+                  //  Toast.makeText(getApplicationContext(),"漫画全部阅读完毕",Toast.LENGTH_SHORT).show();
+                    return;
                 }else {
                     episodeId = result;
                     page = 1;
