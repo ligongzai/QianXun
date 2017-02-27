@@ -53,7 +53,7 @@
             android:layout_height="match_parent"
             android:background="@null"
             android:layout_margin="10dp"
-            android:text="暴走漫画"/>
+            android:text="Kuku动漫"/>
 
     </LinearLayout>
 

@@ -66,6 +66,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     private GridLayoutManager mgridLayoutManager;
 
     private int site = 1; //站点id
+    private int doubleSite = 1;
     private String userId;
 
     private final String URL_SINGLECOMIC = "/singleComic?comicId=";
@@ -133,11 +134,11 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
         ic_text_download.setOnClickListener(this);
         ic_text_getsource.setOnClickListener(this);
 
-        getEpisode(site);
+        getEpisode();
 
     }
 
-    private void getEpisode(int site){
+    private void getEpisode(){
         //开线程获取集数相关信息
         new GetEpisode().execute(MainActivity.URL_PREFIX + URL_EPISODES + "siteId=" + site + "&comicId=" +mTbComic.getComicid());
     }
@@ -215,8 +216,10 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(getApplicationContext(),"当前来源就是非常爱漫",Toast.LENGTH_SHORT).show();
                             return;
                         }
-                            getEpisode(1);
-
+                            doubleSite = site;
+                            site = 1;
+                            getEpisode();
+                            dialog.dismiss();
                     }
                 });
                 ((Button)dialog.findViewById(R.id.btn_bottom_sheet_2)).setOnClickListener(new View.OnClickListener() {
@@ -227,14 +230,23 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                             Toast.makeText(getApplicationContext(),"当前来源就是4399漫画",Toast.LENGTH_SHORT).show();
                             return;
                         }
-                        getEpisode(2);
+                        doubleSite = site;
+                        site = 2;
+                        getEpisode();
+                        dialog.dismiss();
 
                     }
                 });
                 ((Button)dialog.findViewById(R.id.btn_bottom_sheet_3)).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Toast.makeText(getApplicationContext(),"本漫画在暴走漫画中无资源",Toast.LENGTH_SHORT).show();
+                        if (site == 3){
+                            Toast.makeText(getApplicationContext(),"当前来源就是Kuku漫画",Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        doubleSite = site;
+                        site = 3;
+                        getEpisode();
                         dialog.dismiss();
                     }
                 });
@@ -344,6 +356,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
             super.onPostExecute(result);
             //就是无这个站点漫画
             if (result == null){
+                site = doubleSite;
                 Toast.makeText(getApplicationContext(),"本漫画在此来源网站中无资源",Toast.LENGTH_SHORT).show();
             }
             if (!TextUtils.isEmpty(result)){
@@ -359,11 +372,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                         mTbEpisode.clear();
                         List<TbEpisode> more = gson.fromJson(jsonData, new TypeToken<List<TbEpisode>>(){}.getType());
                         mTbEpisode.addAll(more);
-                        if (site == 1){
-                            site = 2;
-                        }else {
-                            site = 1;
-                        }
                     }
 
                     upDateEpisode();
