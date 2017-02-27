@@ -1,7 +1,7 @@
 package com.example.qianxuncartoon.model;
 
 public class TbComic {
-    private Integer comicid;
+    private int comicid;
 
     private String comicname;
 
@@ -9,7 +9,7 @@ public class TbComic {
 
     private String comicauth;
 
-    private Integer classid;
+    private int classid;
 
     private String comiccover;
 
@@ -23,7 +23,7 @@ public class TbComic {
 
     private String classname;
 
-    public Integer getComicid() {
+    public int getComicid() {
         return comicid;
     }
 

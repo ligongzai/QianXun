@@ -1,11 +1,16 @@
 package com.example.qianxuncartoon.activity;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Typeface;
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
 import android.support.design.widget.BottomSheetDialog;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -188,9 +193,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_cartooninfo_collect:
-                //Toast.makeText(getApplicationContext(),"你点击了收藏",Toast.LENGTH_SHORT).show();
-                //访问网路
-                //Object obj=new Object();
                 RequestApiData.getInstance().markComic(1,Integer.parseInt(getIntent().getStringExtra("url")), QianXunApplication.class,CartoonIntro.this);
                 break;
             //点击开始阅读
@@ -199,7 +201,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                          + "&userId=" + userId +"&siteId=" + site);
                 break;
             case R.id.ic_text_download:
-                Toast.makeText(getApplicationContext(),"你点击了下载",Toast.LENGTH_SHORT).show();
+                beginDownLoad();
                 break;
             case R.id.ic_text_getsource:
                 final BottomSheetDialog dialog = new BottomSheetDialog(this);
@@ -238,6 +240,39 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 });
                 break;
         }
+    }
+
+    private void beginDownLoad() {
+
+        //请求权限
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED){
+            //requestPermissions执行弹出请求授权对话框
+            ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    Constant.READ_EXTERNAL_STORAGE);
+        }else {
+            //执行有权限之后的相应操作
+            downLoading();
+        }
+    }
+
+    private void downLoading() {
+        Toast.makeText(getApplicationContext(),"进入了下载",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode){
+            case Constant.READ_EXTERNAL_STORAGE:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED){
+                    //Permission 允许
+                    downLoading();
+                }else {
+                    //Permission 拒绝
+                    Toast.makeText(getApplicationContext(),"您没开启读取权限，无法下载",Toast.LENGTH_SHORT).show();
+                }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     @Override

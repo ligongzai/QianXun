@@ -133,10 +133,9 @@ public class ContentHomeFragment extends Fragment {
 
             @Override
             public void onRefresh() {
-                swipeRefreshLayout.setRefreshing(false);
+                swipeRefreshLayout.setRefreshing(true);
                 page = 1;
-                //      cartooncovers.clear();
-                //      setGridList();
+                setGridList();
             }
         });
         //滑动到底部自动加载刷新
@@ -147,7 +146,7 @@ public class ContentHomeFragment extends Fragment {
                 //0：当前屏幕停止滚动；1时：屏幕在滚动 且 用户仍在触碰或手指还在屏幕上；2时：随用户的操作，屏幕上产生的惯性滑动；
                 // 滑动状态停止并且剩余少于两个item时，自动加载下一页
                 if (newState == RecyclerView.SCROLL_STATE_IDLE
-                        && lastVisibleItem + 2 >= mgridLayoutManager.getItemCount()) {
+                        && lastVisibleItem + 5 >= mgridLayoutManager.getItemCount()) {
                     loadMore();
                 }
             }
@@ -222,6 +221,9 @@ public class ContentHomeFragment extends Fragment {
                     // pages.setPage(page);
                     //       cartooncovers.add(pages);//在数据链表中加入一个用于显示页数的item
                 } else {
+                    if (page == 1){
+                        cartooncovers.clear();
+                    }
                     List<CartoonCover> more = gson.fromJson(jsonData, new TypeToken<List<CartoonCover>>() {
                     }.getType());
 //                    cartooncovers.addAll(more);

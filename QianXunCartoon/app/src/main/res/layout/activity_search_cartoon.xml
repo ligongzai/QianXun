@@ -33,17 +33,11 @@
             android:text="搜索"/>
     </LinearLayout>
 
-    <com.wuxiaolong.pullloadmorerecyclerview.PullLoadMoreRecyclerView
+    <android.support.v7.widget.RecyclerView
         android:id="@+id/recycle_showSearch"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_margin="10dp"/>
+        android:layout_height="wrap_content">
 
-    <!--<android.support.v7.widget.RecyclerView-->
-        <!--android:id="@+id/recycle_showSearch"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content">-->
-
-    <!--</android.support.v7.widget.RecyclerView>-->
+    </android.support.v7.widget.RecyclerView>
     
 </LinearLayout>

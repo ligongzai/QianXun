@@ -1,18 +1,20 @@
 package com.example.qianxuncartoon.activity;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.example.qianxuncartoon.Constant;
-import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.fragment.AccountFragment;
 import com.example.qianxuncartoon.fragment.HomePagerFragment;
 import com.example.qianxuncartoon.R;
@@ -52,6 +54,7 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
         initViews();//初始化控件
         initDatas();//初始化数据
     }

@@ -55,6 +55,8 @@ public class Constant {
     //用户的头像
     public static final String IS_USER_IMAGE="userimage";
 
+    //
+    public static final int READ_EXTERNAL_STORAGE = 101;
 
 
 }
