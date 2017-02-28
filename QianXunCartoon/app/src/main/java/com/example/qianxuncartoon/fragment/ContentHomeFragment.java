@@ -46,7 +46,8 @@ import java.util.List;
 public class ContentHomeFragment extends Fragment {
 
 
-    private boolean isPrepared;// 标志位
+    private boolean isPrepared;// view已经初始化完成
+    private boolean isFirstLoad = true;
     private boolean isVisible;//标志当前页面是否可见
     private boolean dataIsExecutive = false;
     private RecyclerView mrecyclerView;
@@ -65,37 +66,6 @@ public class ContentHomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_content_homepager, container, false);
         return view;
     }
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (getUserVisibleHint()) {
-            isVisible = true;
-            onVisible();
-        } else {
-            isVisible = false;
-            onInvisible();
-        }
-    }
-
-    private void onInvisible() {
-    }
-
-    private void onVisible() {
-        lazyLoad();//实现懒加载
-    }
-
-    private void lazyLoad() {
-        if (!isVisible || !isPrepared) {
-            return;
-        }
-        setGridList();
-    }
-
-    private void setGridList() {
-        new GetData().execute(MainActivity.URL_PREFIX + "/class?classId=" + cartoon_type + "&page=" + page);
-    }
-
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
@@ -120,11 +90,44 @@ public class ContentHomeFragment extends Fragment {
         swipeRefreshLayout = (SwipeRefreshLayout) view.findViewById(R.id.grid_swipe_refresh);
         // 这句话是为了，第一次进入页面的时候显示加载进度条
         swipeRefreshLayout.setProgressViewOffset(false, 0, (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, getResources().getDisplayMetrics()));
+        mAdapter = null;
         isPrepared = true;
+        isFirstLoad = true;
         lazyLoad();
 
         //   new GetData().execute(MainActivity.URL_PREFIX+"/hot?page="+page);
         setListener(); //设置监听事件
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (getUserVisibleHint()) {
+            isVisible = true;
+            onVisible();
+        } else {
+            isVisible = false;
+            onInvisible();
+        }
+    }
+
+    private void onInvisible() {
+    }
+
+    private void onVisible() {
+        lazyLoad();//实现懒加载
+    }
+
+    private void lazyLoad() {
+        if (!isVisible || !isPrepared || !isFirstLoad) {
+            return;
+        }
+        isFirstLoad = false;
+        setGridList();
+    }
+
+    private void setGridList() {
+        new GetData().execute(MainActivity.URL_PREFIX + "/class?classId=" + cartoon_type + "&page=" + page);
     }
 
     private void setListener() {
