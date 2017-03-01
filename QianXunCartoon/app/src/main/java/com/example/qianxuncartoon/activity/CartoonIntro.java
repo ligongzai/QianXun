@@ -194,7 +194,8 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.btn_cartooninfo_collect:
-                RequestApiData.getInstance().markComic(1,Integer.parseInt(getIntent().getStringExtra("url")), QianXunApplication.class,CartoonIntro.this);
+                String userid = UserPreference.read(Constant.IS_USER_ID, null);
+                RequestApiData.getInstance().markComic(((userid==null||userid.equals("")) ? 1 : Integer.parseInt(userid)),Integer.parseInt(getIntent().getStringExtra("url")), QianXunApplication.class,CartoonIntro.this);
                 break;
             //点击开始阅读
             case R.id.btn_cartooninfo_beginread:
@@ -341,7 +342,6 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
            }
            upDateUI();
         }
-
     }
 
     private class GetEpisode extends AsyncTask<String , Integer,String>{
@@ -381,9 +381,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                     e.printStackTrace();
                 }
             }
-
         }
-
     }
 
     private class GetstartReadData extends AsyncTask<String , String ,String>{
@@ -414,12 +412,7 @@ public class CartoonIntro extends AppCompatActivity implements View.OnClickListe
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
-
-
             }
-
         }
-
     }
 }

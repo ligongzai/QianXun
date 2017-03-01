@@ -3,6 +3,6 @@
 
     <corners android:radius="30dp" />
 
-    <solid android:color="@color/searchview_inner" />
+    <solid android:color="#fffafafa" />
 
 </shape>

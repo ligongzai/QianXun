@@ -128,7 +128,7 @@ public class RequestManager {
     public static void getImage(String imgUrl, ImageView view) {
         initRequestQueue();
         ImageLoader imageLoader = new ImageLoader(mRequestQueue, new BitmapCache());
-        ImageLoader.ImageListener listener = ImageLoader.getImageListener(view, R.mipmap.bitbucket, R.mipmap.email);
+        ImageLoader.ImageListener listener = ImageLoader.getImageListener(view, R.mipmap.loading, R.mipmap.email);
         imageLoader.get(imgUrl,listener);
     }
 

@@ -7,14 +7,37 @@
     tools:context="com.example.qianxuncartoon.activity.LoginActivity">
     <!--android:background="@drawable/bg"-->
 
+    <com.sina.weibo.sdk.widget.LoginButton
+        android:id="@+id/login_button_default"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/com_sina_weibo_sdk_login_button_with_account_text"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="40dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:fabSize="normal"
+        android:src="@drawable/plus"
+        android:transitionName="loginFab"
+        android:layout_marginTop="12dp"
+        android:layout_alignTop="@+id/cv"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="14dp" />
+
     <android.support.v7.widget.CardView
         android:layout_width="300dp"
         android:layout_height="300dp"
         app:cardCornerRadius="6dp"
         app:cardElevation="3dp"
         app:cardUseCompatPadding="true"
-        android:layout_centerInParent="true"
-        android:id="@+id/cv">
+        android:id="@+id/cv"
+        android:layout_above="@+id/login_button_default"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -118,26 +141,31 @@
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:fabSize="normal"
-        android:src="@drawable/plus"
-        android:transitionName="loginFab"
-        android:layout_alignTop="@id/cv"
-        android:layout_marginTop="25dp"
-        android:layout_alignEnd="@id/cv"
-        android:layout_marginEnd="-20dp"
-        />
-
-    <com.sina.weibo.sdk.widget.LoginButton
-        android:id="@+id/login_button_default"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@drawable/com_sina_weibo_sdk_login_button_with_account_text"
-        android:layout_below="@+id/cv"
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="18dp" />
+        android:layout_above="@+id/fab"
+        android:weightSum="1"
+        android:layout_marginTop="30dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@mipmap/launch_icon120"
+            android:id="@+id/imageView"
+            android:layout_weight="0.34"
+            android:layout_marginTop="20dp"/>
+
+        <TextView
+            android:text="千寻漫画，你口袋里的漫画屋"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"/>
+    </LinearLayout>
+
 
 </RelativeLayout>

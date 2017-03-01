@@ -15,4 +15,6 @@ public class UrlConstance {
     public static final String KEY_MARK="/qxComic/mark";
     //观看历史接口
     public static final String KEY_HISTORY="/qxComic/historyprivate";
+    //
+    public static final String KEY_REGISTER_INFO = "/qxComic/register";
 }

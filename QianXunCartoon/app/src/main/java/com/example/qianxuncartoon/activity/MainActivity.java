@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -54,6 +55,7 @@ public class MainActivity extends BaseActivity //implements View.OnClickListener
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_main);
+
 
         initViews();//初始化控件
         initDatas();//初始化数据

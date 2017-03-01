@@ -8,10 +8,14 @@
     android:background="?android:colorBackground"
     android:orientation="vertical"
     tools:context="com.example.qianxuncartoon.activity.MainActivity"
+
+
+
     >
 
 
     <com.example.qianxuncartoon.view.NoScrollViewPager
+
         android:id="@+id/id_viewpager"
         android:layout_width="match_parent"
         android:layout_height="0px"

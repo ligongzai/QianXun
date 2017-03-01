@@ -15,6 +15,7 @@ import com.example.qianxuncartoon.Constant;
 import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.UrlConstance;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.adapter.RecyclerViewAdapter;
 import com.example.qianxuncartoon.bean.FavorPrivateInfo;
 import com.example.qianxuncartoon.bean.HistoryPrivateInfo;
@@ -114,8 +115,8 @@ public class ContentHistoryFragment extends Fragment {
 
     //向List里插入标题和描述信息
     private void setList() {
-
-        new getHistoryData().execute(UrlConstance.APP_URL + UrlConstance.KEY_HISTORY + "?userId=1" + "&page=" + page);
+        String userid = UserPreference.read(Constant.IS_USER_ID, null);
+        new getHistoryData().execute(UrlConstance.APP_URL + UrlConstance.KEY_HISTORY + "?userId=" + ((userid==null||userid.equals("")) ? 1 : userid) + "&page=" + page);
     }
 
     @Override
@@ -126,10 +127,7 @@ public class ContentHistoryFragment extends Fragment {
     }
 
 
-
-
-
-    class getHistoryData extends AsyncTask<String,Integer,String> {
+    class getHistoryData extends AsyncTask<String, Integer, String> {
 
         @Override
         protected String doInBackground(String... params) {
@@ -140,7 +138,7 @@ public class ContentHistoryFragment extends Fragment {
         @Override
         protected void onPostExecute(String result) {
             super.onPostExecute(result);
-            if(!TextUtils.isEmpty(result)){
+            if (!TextUtils.isEmpty(result)) {
                 String jsonString = JSON.parseObject(result).getString(Constant.SUC_MSG);
                 if (jsonString != null) {
                     mDataList = JSON.parseArray(jsonString, FavorPrivateInfo.class);
@@ -152,7 +150,7 @@ public class ContentHistoryFragment extends Fragment {
                     mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                 } else {
                     //Toast.makeText(QianXunApplication.getInstance(), JSON.parseObject(result).getString(Constant.FAIL_MSG), Toast.LENGTH_LONG).show();
-                   // Toast.makeText(QianXunApplication.getInstance(), "没有更多了", Toast.LENGTH_LONG).show();
+                    // Toast.makeText(QianXunApplication.getInstance(), "没有更多了", Toast.LENGTH_LONG).show();
                     mPullLoadMoreRecyclerView.setPullLoadMoreCompleted();
                     return;
                 }

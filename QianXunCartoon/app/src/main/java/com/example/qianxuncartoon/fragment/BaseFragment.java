@@ -25,4 +25,5 @@ public class BaseFragment extends Fragment {
     public void showToast(CharSequence text) {
         Toast.makeText(mActivity, text, Toast.LENGTH_SHORT).show();
     }
+
 }

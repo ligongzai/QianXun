@@ -21,6 +21,7 @@ import com.example.qianxuncartoon.QianXunApplication;
 import com.example.qianxuncartoon.R;
 import com.example.qianxuncartoon.RequestApiData;
 import com.example.qianxuncartoon.UrlConstance;
+import com.example.qianxuncartoon.UserPreference;
 import com.example.qianxuncartoon.activity.LoginActivity;
 import com.example.qianxuncartoon.adapter.RecyclerViewAdapter;
 import com.example.qianxuncartoon.bean.FavorPrivateInfo;
@@ -69,6 +70,7 @@ public class ContentFragment extends Fragment {
                 mDataList.clear(); //清除list里面的全部内容
                 setList();
             }
+
             @Override
             public void onLoadMore() {
                 loadMore();
@@ -114,7 +116,8 @@ public class ContentFragment extends Fragment {
 
     //请求网络并向List里插入标题和描述信息
     private void setList() {
-        new getFavorData().execute(UrlConstance.APP_URL + UrlConstance.KEY_FOVAR_PRIVATE + "?userId=1" + "&page=" + page);
+        String userid = UserPreference.read(Constant.IS_USER_ID, null);
+        new getFavorData().execute(UrlConstance.APP_URL + UrlConstance.KEY_FOVAR_PRIVATE + "?userId=" + ((userid == null || userid.equals("")) ? 1 : userid) + "&page=" + page);
     }
 
     @Override
